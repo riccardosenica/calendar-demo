@@ -1,0 +1,78 @@
+type Query {
+  info: String!
+  feed(
+    filter: String
+    skip: Int
+    take: Int
+    orderBy: AppointmentOrderByInput
+  ): Feed!
+}
+
+type Feed {
+  id: ID!
+  appointments: [Appointment!]!
+  count: Int!
+}
+
+type Mutation {
+  createAppointment(
+    title: String!, 
+    description: String!,
+    start: DateTime!,
+    end: DateTime!,
+    ): Appointment!
+  signup(
+    email: String!
+    password: String!
+    name: String!
+  ): AuthPayload
+  login(email: String!, password: String!): AuthPayload
+  follow(appointmentId: ID!): Follow
+}
+
+type Subscription {
+  newAppointment: Appointment
+  newFollow: Follow
+}
+
+type AuthPayload {
+  token: String
+  user: User
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  appointments: [Appointment!]!
+}
+
+type Appointment {
+  id: ID!
+  title: String!
+  description: String!
+  start: DateTime!
+  end: DateTime!
+  createdBy: User
+  follows: [Follow!]!
+  createdAt: DateTime!
+}
+
+type Follow {
+  id: ID!
+  appointment: Appointment!
+  user: User!
+}
+
+input AppointmentOrderByInput {
+  description: Sort
+  url: Sort
+  createdAt: Sort
+}
+
+enum Sort {
+  asc
+  desc
+}
+
+scalar DateTime
