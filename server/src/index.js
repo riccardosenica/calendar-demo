@@ -1,4 +1,14 @@
 const { ApolloServer, PubSub } = require('apollo-server');
+// const { Cors } = require('cors');
+// const { Express } = require('express');
+
+const express = require("express");
+const { graphqlHTTP } = require('express-graphql');
+const mongoose = require("mongoose");
+const graphqlSchema = require("./graphql/schema/schema")
+const appointmentResolvers = require("./graphql/resolvers/appointment")
+const userResolvers = require("./graphql/resolvers/user")
+
 var MongoClient = require('mongodb', { useUnifiedTopology: true }).MongoClient;
 // import { MongoClient } from 'mongodb'
 const Query = require('./resolvers/Query');
@@ -13,87 +23,126 @@ const { getUserId } = require('./utils');
 
 const pubsub = new PubSub();
 
+const app = express()
+
+const graphqlResolvers = {
+  appointmentResolvers,
+  userResolvers
+};
+
+
+app.use(
+  "/graphql",
+  graphqlHTTP({
+    schema: graphqlSchema,
+    rootValue: appointmentResolvers,
+    graphiql: true,
+  })
+)
+const uri = `mongodb+srv://admin:hEbAjhvkrFDHAP3@cluster0.0hjtt.mongodb.net/Calendar?retryWrites=true&w=majority`
+const options = { useNewUrlParser: true, useUnifiedTopology: true }
+let db = mongoose
+  .connect(uri, options)
+  .then(() => app.listen(4000, console.log("Server is running")))
+  .catch(error => {
+    throw error
+  })
+
+// const app = new Express();
+// app.use(Cors());
+
 // const mongo = new MongoClient({
 //   errorFormat: 'minimal'
 // });
 
-const mongo = MongoClient.connect("mongodb+srv://admin:hEbAjhvkrFDHAP3@cluster0.0hjtt.mongodb.net/Calendar?retryWrites=true&w=majority", function (err, db) {
+// const mongo = MongoClient.connect("mongodb+srv://admin:hEbAjhvkrFDHAP3@cluster0.0hjtt.mongodb.net/Calendar?retryWrites=true&w=majority", function (err, db) {
 
-  if (err) throw err;
-  console.log("ALL good");
-  //Write databse Insert/Update/Query code here..
+//   if (err) throw err;
+//   console.log("ALL good");
+//   //Write databse Insert/Update/Query code here..
 
-});
+// });
 
-const resolvers = {
-  Query,
-  Mutation,
-  Subscription,
-  User,
-  Appointment,
-  Follow
-};
+// const dbClient = new MongoClient(
+//   'mongodb+srv://admin:hEbAjhvkrFDHAP3@cluster0.0hjtt.mongodb.net/Calendar?retryWrites=true&w=majority',
+//   {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   }
+// )
 
-let db;
+// const resolvers = {
+//   Query,
+//   Mutation,
+//   Subscription,
+//   User,
+//   Appointment,
+//   Follow
+// };
 
-const server = new ApolloServer({
-  typeDefs: fs.readFileSync(
-    path.join(__dirname, 'schema.graphql'),
-    'utf8'
-  ),
-  resolvers,
-  // context: async () => {
-  //   if (!db) {
-  //     try {
-  //       const dbClient = new MongoClient(
-  //         'mongodb+srv://test:qwerty123@cluster0-yvwjx.mongodb.net/next-graphql?retryWrites=true&w=majority',
-  //         {
-  //           useNewUrlParser: true,
-  //           useUnifiedTopology: true,
-  //         }
-  //       )
+// let db;
 
-  //       if (!dbClient.isConnected()) await dbClient.connect()
-  //       db = dbClient.db('next-graphql') // database name
-  //     } catch (e) {
-  //       console.log('--->error while connecting with graphql context (db)', e)
-  //     }
-  //   }
+// const server = new ApolloServer({
+//   typeDefs: fs.readFileSync(
+//     path.join(__dirname, 'schema.graphql'),
+//     'utf8'
+//   ),
+//   resolvers,
+//   context: async ({ req }) => {
+//     if (!db) {
+//       try {
+//         if (!dbClient.isConnected()) await dbClient.connect()
+//         mongo = dbClient.db('Calendar') // database name
+//         console.log(db);
+//       } catch (e) {
+//         console.log('--->error while connecting with graphql context (db)', e)
+//       }
+//     }
 
-  //   return { db }
-  // },
-  context: ({ req }) => {
-    return {
-      ...req,
-      mongo,
-      pubsub,
-      userId:
-        req && req.headers.authorization
-          ? getUserId(req)
-          : null
-    };
-  },
-  subscriptions: {
-    onConnect: (connectionParams) => {
-      if (connectionParams.authToken) {
-        return {
-          mongo,
-          userId: getUserId(
-            null,
-            connectionParams.authToken
-          )
-        };
-      } else {
-        return {
-          mongo
-        };
-      }
-    }
-  }
-});
+//     return {
+//       ...req,
+//       mongo,
+//       pubsub,
+//       userId:
+//         req && req.headers.authorization
+//           ? getUserId(req)
+//           : null
+//     }
+//   },
+//   // context: ({ req }) => {
+//   //   return {
+//   //     ...req,
+//   //     mongo,
+//   //     pubsub,
+//   //     userId:
+//   //       req && req.headers.authorization
+//   //         ? getUserId(req)
+//   //         : null
+//   //   };
+//   // },
+//   // subscriptions: {
+//   //   onConnect: (connectionParams) => {
+//   //     if (connectionParams.authToken) {
+//   //       return {
+//   //         mongo,
+//   //         userId: getUserId(
+//   //           null,
+//   //           connectionParams.authToken
+//   //         )
+//   //       };
+//   //     } else {
+//   //       return {
+//   //         mongo
+//   //       };
+//   //     }
+//   //   }
+//   // }
+// });
 
-server
-  .listen()
-  .then(({ url }) =>
-    console.log(`Server is running on ${url}`)
-  );
+// // server.applyMiddleware({ app });
+
+// server
+//   .listen()
+//   .then(({ url }) =>
+//     console.log(`Server is running on ${url}`)
+//   );

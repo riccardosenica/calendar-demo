@@ -6,14 +6,14 @@ import { FEED_QUERY } from './AppointmentList';
 
 const CREATE_APPOINTMENT_MUTATION = gql`
   mutation CreateAppointmentMutation(
+    $title: String!
     $description: String!
-    $url: String!
   ) {
-    createAppointment(description: $description, url: $url) {
+    createAppointment(title: $title, description: $description) {
       id
-      createdAt
-      url
+      title
       description
+      createdAt
     }
   }
 `;

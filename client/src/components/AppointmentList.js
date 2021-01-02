@@ -61,7 +61,7 @@ const getQueryVariables = (isNewPage, page) => {
   const skip = isNewPage ? (page - 1) * APPOINTMENTS_PER_PAGE : 0;
   const take = isNewPage ? APPOINTMENTS_PER_PAGE : 100;
   const orderBy = { createdAt: 'desc' };
-  console.log(isNewPage, page, APPOINTMENTS_PER_PAGE, skip, take, orderBy);
+
   return { take, skip, orderBy };
 };
 
@@ -77,8 +77,6 @@ const AppointmentList = () => {
   const page = parseInt(
     pageIndexParams[pageIndexParams.length - 1]
   );
-
-  console.log(pageIndexParams.length, page);
 
   const pageIndex = page ? (page - 1) * APPOINTMENTS_PER_PAGE : 0;
 

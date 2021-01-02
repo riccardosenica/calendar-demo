@@ -6,6 +6,7 @@ type Query {
     take: Int
     orderBy: AppointmentOrderByInput
   ): Feed!
+  # users: [User!]!
 }
 
 type Feed {
@@ -26,8 +27,13 @@ type Mutation {
     password: String!
     name: String!
   ): AuthPayload
-  login(email: String!, password: String!): AuthPayload
-  follow(appointmentId: ID!): Follow
+  login(
+    email: String!, 
+    password: String!
+  ): AuthPayload
+  follow(
+    appointmentId: ID!
+    ): Follow
 }
 
 type Subscription {

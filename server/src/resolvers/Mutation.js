@@ -17,7 +17,7 @@ function createAppointment(parent, args, context, info) {
 }
 
 async function signup(parent, args, context, info) {
-  console.log(context);
+  console.log(context.mongo);
   const password = await bcrypt.hash(args.password, 10);
   const user = await context.mongo.user.create({
     data: { ...args, password }

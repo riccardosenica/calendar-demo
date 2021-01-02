@@ -1,5 +1,5 @@
 async function feed(parent, args, context, info) {
-  console.log(context);
+
   const where = args.filter
     ? {
       OR: [
