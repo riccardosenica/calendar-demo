@@ -1,27 +1,56 @@
-
 import dotenv from 'dotenv';
 import express from 'express';
-// const express = require("express");
-// const { ApolloServer, PubSub } = require('apollo-server');
-import { ApolloServer } from 'apollo-server-express';
-// const mongoose = require("mongoose");
+import { ApolloServer, PubSub } from 'apollo-server-express';
 import mongoose from 'mongoose';
-
 import './utils/db.js';
-// require('./utils/db')
 import schema from './schema/index.js';
-// require('./schema')
-
-
 
 dotenv.config();
 
 const app = express();
+const pubsub = new PubSub();
 
 const server = new ApolloServer({
   schema,
   cors: true,
   playground: process.env.NODE_ENV === 'development' ? true : false,
+  context: async ({ req }) => {
+    //     if (!db) {
+    //       try {
+    //         if (!dbClient.isConnected()) await dbClient.connect()
+    //         mongo = dbClient.db('Calendar') // database name
+    //         console.log(db);
+    //       } catch (e) {
+    //         console.log('--->error while connecting with graphql context (db)', e)
+    //       }
+
+    return {
+      ...req,
+      mongoose,
+      pubsub,
+      userId:
+        req && req.headers.authorization
+          ? getUserId(req)
+          : null
+    }
+  },
+  subscriptions: {
+    onConnect: (connectionParams) => {
+      if (connectionParams.authToken) {
+        return {
+          mongoose,
+          userId: getUserId(
+            null,
+            connectionParams.authToken
+          )
+        };
+      } else {
+        return {
+          mongoose
+        };
+      }
+    }
+  },
   introspection: true,
   tracing: true,
   path: '/',
@@ -46,10 +75,6 @@ app.listen({ port: process.env.PORT }, () => {
   console.log(`🚀 Server listening on port ${process.env.PORT}`);
   console.log(`😷 Health checks available at ${process.env.HEALTH_ENDPOINT}`);
 });
-
-
-
-
 
 
 
@@ -85,47 +110,6 @@ app.listen({ port: process.env.PORT }, () => {
 //   userResolvers
 // };
 
-
-// app.use(
-//   "/graphql",
-//   graphqlHTTP({
-//     schema: graphqlSchema,
-//     rootValue: appointmentResolvers,
-//     graphiql: true,
-//   })
-// )
-// const uri = `mongodb+srv://admin:hEbAjhvkrFDHAP3@cluster0.0hjtt.mongodb.net/Calendar?retryWrites=true&w=majority`
-// const options = { useNewUrlParser: true, useUnifiedTopology: true }
-// let db = mongoose
-//   .connect(uri, options)
-//   .then(() => app.listen(4000, console.log("Server is running")))
-//   .catch(error => {
-//     throw error
-//   })
-
-// // const app = new Express();
-// // app.use(Cors());
-
-// // const mongo = new MongoClient({
-// //   errorFormat: 'minimal'
-// // });
-
-// // const mongo = MongoClient.connect("mongodb+srv://admin:hEbAjhvkrFDHAP3@cluster0.0hjtt.mongodb.net/Calendar?retryWrites=true&w=majority", function (err, db) {
-
-// //   if (err) throw err;
-// //   console.log("ALL good");
-// //   //Write databse Insert/Update/Query code here..
-
-// // });
-
-// // const dbClient = new MongoClient(
-// //   'mongodb+srv://admin:hEbAjhvkrFDHAP3@cluster0.0hjtt.mongodb.net/Calendar?retryWrites=true&w=majority',
-// //   {
-// //     useNewUrlParser: true,
-// //     useUnifiedTopology: true,
-// //   }
-// // )
-
 // // const resolvers = {
 // //   Query,
 // //   Mutation,
@@ -134,70 +118,3 @@ app.listen({ port: process.env.PORT }, () => {
 // //   Appointment,
 // //   Follow
 // // };
-
-// // let db;
-
-// // const server = new ApolloServer({
-// //   typeDefs: fs.readFileSync(
-// //     path.join(__dirname, 'schema.graphql'),
-// //     'utf8'
-// //   ),
-// //   resolvers,
-// //   context: async ({ req }) => {
-// //     if (!db) {
-// //       try {
-// //         if (!dbClient.isConnected()) await dbClient.connect()
-// //         mongo = dbClient.db('Calendar') // database name
-// //         console.log(db);
-// //       } catch (e) {
-// //         console.log('--->error while connecting with graphql context (db)', e)
-// //       }
-// //     }
-
-// //     return {
-// //       ...req,
-// //       mongo,
-// //       pubsub,
-// //       userId:
-// //         req && req.headers.authorization
-// //           ? getUserId(req)
-// //           : null
-// //     }
-// //   },
-// //   // context: ({ req }) => {
-// //   //   return {
-// //   //     ...req,
-// //   //     mongo,
-// //   //     pubsub,
-// //   //     userId:
-// //   //       req && req.headers.authorization
-// //   //         ? getUserId(req)
-// //   //         : null
-// //   //   };
-// //   // },
-// //   // subscriptions: {
-// //   //   onConnect: (connectionParams) => {
-// //   //     if (connectionParams.authToken) {
-// //   //       return {
-// //   //         mongo,
-// //   //         userId: getUserId(
-// //   //           null,
-// //   //           connectionParams.authToken
-// //   //         )
-// //   //       };
-// //   //     } else {
-// //   //       return {
-// //   //         mongo
-// //   //       };
-// //   //     }
-// //   //   }
-// //   // }
-// // });
-
-// // // server.applyMiddleware({ app });
-
-// // server
-// //   .listen()
-// //   .then(({ url }) =>
-// //     console.log(`Server is running on ${url}`)
-// //   );

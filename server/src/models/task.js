@@ -1,12 +1,11 @@
 import mongoose from 'mongoose';
-const { Schema } = mongoose;
 import timestamps from 'mongoose-timestamp';
 import { composeWithMongoose } from 'graphql-compose-mongoose';
 
-export const TaskSchema = new Schema(
+export const TaskSchema = new mongoose.Schema(
     {
         user: {
-            type: Schema.Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
             required: true,
         },

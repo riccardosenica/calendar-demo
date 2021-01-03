@@ -1,9 +1,8 @@
 import mongoose from 'mongoose';
-const { Schema } = mongoose
 import timestamps from 'mongoose-timestamp';
 import { composeWithMongoose } from 'graphql-compose-mongoose';
 
-export const UserSchema = new Schema(
+export const UserSchema = new mongoose.Schema(
     {
         name: {
             type: String,
