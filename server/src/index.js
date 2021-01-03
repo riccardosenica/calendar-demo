@@ -7,18 +7,20 @@ import schema from './schema.js';
 import './utils/db.js';
 import fs from 'fs';
 import path from 'path';
+import cors from 'cors';
 
 const moduleURL = new URL(import.meta.url);
 const __dirname = path.dirname(moduleURL.pathname);
 const app = express();
 const pubsub = new PubSub();
-const PORT = 4000;
 
 dotenv.config();
 
+app.use(cors());
+
 app.get('/', (req, res) => {
   res.json({
-    msg: 'Welcome to GraphQL'
+    msg: 'GraphQL home!'
   })
 });
 
@@ -28,32 +30,33 @@ app.use('/graphql', graphqlHTTP({
 }));
 
 const server = new ApolloServer({
-  typeDefs: fs.readFileSync(
-    path.join(__dirname, 'schema.graphql'),
-    'utf8'
-  ),
+  // typeDefs: fs.readFileSync(
+  //   path.join(__dirname, 'schema.graphql'),
+  //   'utf8'
+  // ),
+  schema,
   cors: true,
   playground: process.env.NODE_ENV === 'development' ? true : false,
-  context: async ({ req }) => {
-    //     if (!db) {
-    //       try {
-    //         if (!dbClient.isConnected()) await dbClient.connect()
-    //         mongo = dbClient.db('Calendar') // database name
-    //         console.log(db);
-    //       } catch (e) {
-    //         console.log('--->error while connecting with graphql context (db)', e)
-    //       }
+  // context: async ({ req }) => {
+  //   //     if (!db) {
+  //   //       try {
+  //   //         if (!dbClient.isConnected()) await dbClient.connect()
+  //   //         mongo = dbClient.db('Calendar') // database name
+  //   //         console.log(db);
+  //   //       } catch (e) {
+  //   //         console.log('--->error while connecting with graphql context (db)', e)
+  //   //       }
 
-    return {
-      ...req,
-      mongoose,
-      // pubsub,
-      // userId:
-      //   req && req.headers.authorization
-      //     ? getUserId(req)
-      //     : null
-    }
-  },
+  //   return {
+  //     ...req,
+  //     mongoose,
+  //     pubsub,
+  //     userId:
+  //       req && req.headers.authorization
+  //         ? getUserId(req)
+  //         : null
+  //   }
+  // },
   // subscriptions: {
   //   onConnect: (connectionParams) => {
   //     if (connectionParams.authToken) {

@@ -52,10 +52,10 @@ const Search = () => {
           OK
         </button>
       </div>
-      {data &&
+      {/* {data &&
         data.feed.appointments.map((appointment, index) => (
           <Link key={appointment.id} link={appointment} index={index} />
-        ))}
+        ))} */}
     </>
   );
 };

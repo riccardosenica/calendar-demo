@@ -6,56 +6,56 @@ import { useQuery, gql } from '@apollo/client';
 import { Link } from 'react-router-dom';
 
 export const FEED_QUERY = gql`
-  query FeedQuery(
+  query AppointmentManyQuery(
     $take: Int
     $skip: Int
     $orderBy: AppointmentOrderByInput
   ) {
-    feed(take: $take, skip: $skip, orderBy: $orderBy) {
+    appointmentMany(take: $take, skip: $skip, orderBy: $orderBy) {
       id
       appointments {
         id
         createdAt
         title
-        start
-        end
+        # start
+        # end
         description
-        createdBy {
-          id
-          name
-        }
-        follows {
-          id
-          user {
-            id
-          }
-        }
+        # createdBy {
+        #   id
+        #   name
+        # }
+        # follows {
+        #   id
+        #   user {
+        #     id
+        #   }
+        # }
       }
       count
     }
   }
 `;
 
-const NEW_APPOINTMENTS_SUBSCRIPTION = gql`
-  subscription {
-    newAppointment {
-      id
-      url
-      description
-      createdAt
-      createdBy {
-        id
-        name
-      }
-      follows {
-        id
-        user {
-          id
-        }
-      }
-    }
-  }
-`;
+// const NEW_APPOINTMENTS_SUBSCRIPTION = gql`
+//   subscription {
+//     newAppointment {
+//       id
+//       url
+//       description
+//       createdAt
+//       createdBy {
+//         id
+//         name
+//       }
+//       follows {
+//         id
+//         user {
+//           id
+//         }
+//       }
+//     }
+//   }
+// `;
 
 const getQueryVariables = (isNewPage, page) => {
   const skip = isNewPage ? (page - 1) * APPOINTMENTS_PER_PAGE : 0;
@@ -102,25 +102,25 @@ const AppointmentList = () => {
     return rankedAppointments;
   };
 
-  subscribeToMore({
-    document: NEW_APPOINTMENTS_SUBSCRIPTION,
-    updateQuery: (prev, { subscriptionData }) => {
-      if (!subscriptionData.data) return prev;
-      const newAppointment = subscriptionData.data.newAppointment;
-      const exists = prev.feed.appointments.find(
-        ({ id }) => id === newAppointment.id
-      );
-      if (exists) return prev;
+  // subscribeToMore({
+  //   document: NEW_APPOINTMENTS_SUBSCRIPTION,
+  //   updateQuery: (prev, { subscriptionData }) => {
+  //     if (!subscriptionData.data) return prev;
+  //     const newAppointment = subscriptionData.data.newAppointment;
+  //     const exists = prev.feed.appointments.find(
+  //       ({ id }) => id === newAppointment.id
+  //     );
+  //     if (exists) return prev;
 
-      return Object.assign({}, prev, {
-        feed: {
-          appointments: [newAppointment, ...prev.feed.appointments],
-          count: prev.feed.appointments.length + 1,
-          __typename: prev.feed.__typename
-        }
-      });
-    }
-  });
+  //     return Object.assign({}, prev, {
+  //       feed: {
+  //         appointments: [newAppointment, ...prev.feed.appointments],
+  //         count: prev.feed.appointments.length + 1,
+  //         __typename: prev.feed.__typename
+  //       }
+  //     });
+  //   }
+  // });
 
   return (
     <>

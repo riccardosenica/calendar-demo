@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './styles/index.css';
 import App from './components/App';
+import { BrowserRouter } from 'react-router-dom';
 // import * as serviceWorker from './serviceWorker';
 
 // 1
@@ -14,7 +15,7 @@ import {
 
 // 2
 const httpLink = createHttpLink({
-  uri: 'http://localhost:4000'
+  uri: 'http://localhost:5000/graphql'
 });
 
 // 3
@@ -25,9 +26,11 @@ const client = new ApolloClient({
 
 // 4
 ReactDOM.render(
-  <ApolloProvider client={client}>
-    <App />
-  </ApolloProvider>,
+  <BrowserRouter>
+    <ApolloProvider client={client}>
+      <App />
+    </ApolloProvider>
+  </BrowserRouter>,
   document.getElementById('root')
 );
 // serviceWorker.unregister();
