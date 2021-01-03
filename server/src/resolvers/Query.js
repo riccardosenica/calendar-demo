@@ -8,7 +8,7 @@ async function feed(parent, args, context, info) {
       ]
     }
     : {};
-
+  console.log(context.mongo);
   const appointments = await context.mongo.appointment.findMany({
     where,
     skip: args.skip,
