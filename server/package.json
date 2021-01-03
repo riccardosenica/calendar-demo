@@ -39,9 +39,11 @@
     "node-migrate": "^0.1.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.2.2",
     "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-0": "^6.24.1",
     "eslint": "^7.17.0",
     "eslint-plugin-babel": "^5.3.1",
     "eslint-plugin-import": "^2.22.1",

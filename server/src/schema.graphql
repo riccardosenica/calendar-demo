@@ -6,6 +6,7 @@ type Query {
     take: Int
     orderBy: AppointmentOrderByInput
   ): Feed!
+  allProducts: [Product]
   # users: [User!]!
 }
 
@@ -64,6 +65,12 @@ type Appointment {
   createdAt: DateTime!
 }
 
+type Product {
+  id: ID!
+  title: String!
+  qty: Integer
+}
+
 type Follow {
   id: ID!
   appointment: Appointment!
@@ -81,4 +88,5 @@ enum Sort {
   desc
 }
 
+scalar Integer
 scalar DateTime

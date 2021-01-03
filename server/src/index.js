@@ -1,17 +1,37 @@
-import dotenv from 'dotenv';
 import express from 'express';
+import dotenv from 'dotenv';
+import { graphqlHTTP } from 'express-graphql';
 import { ApolloServer, PubSub } from 'apollo-server-express';
 import mongoose from 'mongoose';
+import schema from './schema.js';
 import './utils/db.js';
-import schema from './schema/index.js';
+import fs from 'fs';
+import path from 'path';
+
+const moduleURL = new URL(import.meta.url);
+const __dirname = path.dirname(moduleURL.pathname);
+const app = express();
+const pubsub = new PubSub();
+const PORT = 4000;
 
 dotenv.config();
 
-const app = express();
-const pubsub = new PubSub();
+app.get('/', (req, res) => {
+  res.json({
+    msg: 'Welcome to GraphQL'
+  })
+});
+
+app.use('/graphql', graphqlHTTP({
+  schema: schema,
+  graphiql: true
+}));
 
 const server = new ApolloServer({
-  schema,
+  typeDefs: fs.readFileSync(
+    path.join(__dirname, 'schema.graphql'),
+    'utf8'
+  ),
   cors: true,
   playground: process.env.NODE_ENV === 'development' ? true : false,
   context: async ({ req }) => {
@@ -27,30 +47,30 @@ const server = new ApolloServer({
     return {
       ...req,
       mongoose,
-      pubsub,
-      userId:
-        req && req.headers.authorization
-          ? getUserId(req)
-          : null
+      // pubsub,
+      // userId:
+      //   req && req.headers.authorization
+      //     ? getUserId(req)
+      //     : null
     }
   },
-  subscriptions: {
-    onConnect: (connectionParams) => {
-      if (connectionParams.authToken) {
-        return {
-          mongoose,
-          userId: getUserId(
-            null,
-            connectionParams.authToken
-          )
-        };
-      } else {
-        return {
-          mongoose
-        };
-      }
-    }
-  },
+  // subscriptions: {
+  //   onConnect: (connectionParams) => {
+  //     if (connectionParams.authToken) {
+  //       return {
+  //         mongoose,
+  //         userId: getUserId(
+  //           null,
+  //           connectionParams.authToken
+  //         )
+  //       };
+  //     } else {
+  //       return {
+  //         mongoose
+  //       };
+  //     }
+  //   }
+  // },
   introspection: true,
   tracing: true,
   path: '/',
@@ -75,6 +95,9 @@ app.listen({ port: process.env.PORT }, () => {
   console.log(`🚀 Server listening on port ${process.env.PORT}`);
   console.log(`😷 Health checks available at ${process.env.HEALTH_ENDPOINT}`);
 });
+
+
+
 
 
 
