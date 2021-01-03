@@ -4,17 +4,32 @@ import { composeWithMongoose } from 'graphql-compose-mongoose';
 
 export const UserSchema = new mongoose.Schema(
     {
-        name: {
+        firstName: {
             type: String,
-            trim: true,
             required: true,
         },
+
+        lastName: {
+            type: String,
+            required: true,
+        },
+
+        password: {
+            type: String,
+            required: true,
+        },
+
         email: {
             type: String,
             lowercase: true,
-            trim: true,
             unique: true,
             required: true,
+        },
+
+        isActive: {
+            type: Boolean,
+            required: true,
+            default: 1
         },
     },
     {

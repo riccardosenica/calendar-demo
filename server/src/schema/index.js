@@ -5,16 +5,16 @@ import db from '../utils/db.js';
 const schemaComposer = new SchemaComposer();
 
 import { UserQuery, UserMutation } from './user.js';
-import { TaskQuery, TaskMutation } from './task.js';
+import { AppointmentQuery, AppointmentMutation } from './appointment.js';
 
 schemaComposer.Query.addFields({
     ...UserQuery,
-    ...TaskQuery,
+    ...AppointmentQuery,
 });
 
 schemaComposer.Mutation.addFields({
     ...UserMutation,
-    ...TaskMutation,
+    ...AppointmentMutation,
 });
 
 export default schemaComposer.buildSchema();
