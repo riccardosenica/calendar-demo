@@ -1,9 +1,9 @@
 import React from 'react';
 // import CreateAppointment from './CreateAppointment';
 import Header from './Header';
-// import AppointmentList from './AppointmentList';
-import ProductList from './ProductList';
 import { Switch, Route } from 'react-router-dom';
+import ProductList from './ProductList';
+import AppointmentList from './AppointmentList';
 
 const App = () => {
   return (
@@ -11,8 +11,8 @@ const App = () => {
       <Header />
       <div className="ph3 pv1 background-gray">
         <Switch>
-          <Route exact path="/" component={ProductList} />
-          {/* <Route exact path="/" component={AppointmentList} /> */}
+          {/* <Route exact path="/" component={ProductList} /> */}
+          <Route exact path="/" component={AppointmentList} />
           {/* <Route exact path="/create" component={CreateAppointment} /> */}
         </Switch>
       </div>

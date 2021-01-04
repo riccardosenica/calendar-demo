@@ -1,14 +1,14 @@
+// import Appointment from '../../client/src/components/Appointment.js';
 import Product from './models/product.js';
+import Appointment from './models/appointment.js';
 
 export const resolvers = {
     Query: {
         async allProducts() {
-            const products = await Product.find();
-            console.log("Tah!", products);
-            return products;
-            // return {
-            //     products
-            // };
+            return await Product.find();
+        },
+        async allAppointments() {
+            return await Appointment.find();
         },
     },
     Mutation: {

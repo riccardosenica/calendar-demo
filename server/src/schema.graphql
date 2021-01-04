@@ -7,6 +7,7 @@ type Query {
     orderBy: AppointmentOrderByInput
   ): Feed!
   allProducts: [Product]
+  allAppointments: [Appointment]
   users: [User!]!
 }
 
@@ -20,8 +21,8 @@ type Mutation {
   createAppointment(
     title: String!, 
     description: String!,
-    start: DateTime!,
-    end: DateTime!,
+    timeStart: DateTime!,
+    timeEnd: DateTime!,
   ): Appointment!
   createProduct(
     input: ProductInput
@@ -58,31 +59,32 @@ type AuthPayload {
 }
 
 type User {
-  id: ID!
+  _id: ID!
   name: String!
   email: String!
   appointments: [Appointment!]!
 }
 
 type Appointment {
-  id: ID!
+  _id: ID!
   title: String!
   description: String!
-  start: DateTime!
-  end: DateTime!
-  createdBy: User
-  follows: [Follow!]!
-  createdAt: DateTime!
+  timeStart: DateTime!
+  timeEnd: DateTime!
+  deleted: Boolean
+  # createdBy: User
+  # follows: [Follow!]!
+  # createdAt: DateTime!
 }
 
 type Product {
-  id: ID!
+  _id: ID!
   title: String!
   qty: Int
 }
 
 type Follow {
-  id: ID!
+  _id: ID!
   appointment: Appointment!
   user: User!
 }

@@ -30,33 +30,33 @@ app.use('/graphql', graphqlHTTP({
 }));
 
 const server = new ApolloServer({
-  // typeDefs: fs.readFileSync(
-  //   path.join(__dirname, 'schema.graphql'),
-  //   'utf8'
-  // ),
-  schema,
+  typeDefs: fs.readFileSync(
+    path.join(__dirname, 'schema.graphql'),
+    'utf8'
+  ),
+  // schema,
   cors: true,
   playground: process.env.NODE_ENV === 'development' ? true : false,
-  // context: async ({ req }) => {
-  //   //     if (!db) {
-  //   //       try {
-  //   //         if (!dbClient.isConnected()) await dbClient.connect()
-  //   //         mongo = dbClient.db('Calendar') // database name
-  //   //         console.log(db);
-  //   //       } catch (e) {
-  //   //         console.log('--->error while connecting with graphql context (db)', e)
-  //   //       }
+  context: async ({ req }) => {
+    //     if (!db) {
+    //       try {
+    //         if (!dbClient.isConnected()) await dbClient.connect()
+    //         mongo = dbClient.db('Calendar') // database name
+    //         console.log(db);
+    //       } catch (e) {
+    //         console.log('--->error while connecting with graphql context (db)', e)
+    //       }
 
-  //   return {
-  //     ...req,
-  //     mongoose,
-  //     pubsub,
-  //     userId:
-  //       req && req.headers.authorization
-  //         ? getUserId(req)
-  //         : null
-  //   }
-  // },
+    return {
+      ...req,
+      mongoose,
+      pubsub,
+      // userId:
+      //   req && req.headers.authorization
+      //     ? getUserId(req)
+      //     : null
+    }
+  },
   // subscriptions: {
   //   onConnect: (connectionParams) => {
   //     if (connectionParams.authToken) {
