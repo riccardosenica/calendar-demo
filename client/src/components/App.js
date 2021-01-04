@@ -1,8 +1,8 @@
 import React from 'react';
-// import CreateAppointment from './CreateAppointment';
+import CreateAppointment from './CreateAppointment';
 import Header from './Header';
 import { Switch, Route } from 'react-router-dom';
-import ProductList from './ProductList';
+// import ProductList from './ProductList';
 import AppointmentList from './AppointmentList';
 
 const App = () => {
@@ -13,7 +13,7 @@ const App = () => {
         <Switch>
           {/* <Route exact path="/" component={ProductList} /> */}
           <Route exact path="/" component={AppointmentList} />
-          {/* <Route exact path="/create" component={CreateAppointment} /> */}
+          <Route exact path="/create" component={CreateAppointment} />
         </Switch>
       </div>
     </div>

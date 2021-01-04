@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import { useMutation, gql } from '@apollo/client';
 import { APPOINTMENTS_PER_PAGE } from '../constants';
-import { FEED_QUERY } from './AppointmentList';
+import { APPOINTMENTS_QUERY } from './AppointmentList';
+import Datetime from 'react-datetime';
+import "react-datetime/css/react-datetime.css";
 
 const CREATE_APPOINTMENT_MUTATION = gql`
   mutation CreateAppointmentMutation(
@@ -13,7 +15,8 @@ const CREATE_APPOINTMENT_MUTATION = gql`
       id
       title
       description
-      createdAt
+      timeStart
+      timeEnd
     }
   }
 `;
@@ -24,16 +27,16 @@ const CreateAppointment = () => {
     const [formState, setFormState] = useState({
         title: '',
         description: '',
-        start: '',
-        end: ''
+        timeStart: '',
+        timeEnd: ''
     });
 
     const [createAppointment] = useMutation(CREATE_APPOINTMENT_MUTATION, {
         variables: {
             title: formState.title,
             description: formState.description,
-            start: formState.start,
-            end: formState.end
+            timeStart: formState.timeStart,
+            timeEnd: formState.timeEnd
         },
         update: (cache, { data: { createAppointment } }) => {
             const take = APPOINTMENTS_PER_PAGE;
@@ -41,7 +44,7 @@ const CreateAppointment = () => {
             const orderBy = { createdAt: 'desc' };
 
             const data = cache.readQuery({
-                query: FEED_QUERY,
+                query: APPOINTMENTS_QUERY,
                 variables: {
                     take,
                     skip,
@@ -50,10 +53,10 @@ const CreateAppointment = () => {
             });
 
             cache.writeQuery({
-                query: FEED_QUERY,
+                query: APPOINTMENTS_QUERY,
                 data: {
-                    feed: {
-                        appointments: [createAppointment, ...data.feed.appointments]
+                    allAppointments: {
+                        appointments: [createAppointment, ...data.allAppointments.appointments]
                     }
                 },
                 variables: {
@@ -85,7 +88,7 @@ const CreateAppointment = () => {
                             })
                         }
                         type="text"
-                        placeholder="The title for the appointment"
+                        placeholder="Input title"
                     />
                     <input
                         className="mb2"
@@ -97,32 +100,40 @@ const CreateAppointment = () => {
                             })
                         }
                         type="text"
-                        placeholder="A description for the appointment"
+                        placeholder="Input description"
                     />
-                    <input
+                    <Datetime
                         className="mb2"
-                        value={formState.start}
+                        value={formState.timeStart}
                         onChange={(e) =>
                             setFormState({
                                 ...formState,
-                                start: e.target.value
+                                timeStart: e
                             })
                         }
-                        type="text"
-                        placeholder="The start for the appointment"
                     />
-                    <input
+                    <Datetime
                         className="mb2"
-                        value={formState.end}
+                        value={formState.timeStart}
                         onChange={(e) =>
                             setFormState({
                                 ...formState,
-                                end: e.target.value
+                                timeEnd: e
+                            })
+                        }
+                    />
+                    {/* <input
+                        className="mb2"
+                        value={formState.timeEnd}
+                        onChange={(e) =>
+                            setFormState({
+                                ...formState,
+                                timeStart: e.target.value
                             })
                         }
                         type="text"
-                        placeholder="The end for the appointment"
-                    />
+                        placeholder="Input end time"
+                    /> */}
                 </div>
                 <button type="submit">Submit</button>
             </form>

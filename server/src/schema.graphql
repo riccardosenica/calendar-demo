@@ -19,11 +19,15 @@ type Feed {
 
 type Mutation {
   createAppointment(
-    title: String!, 
-    description: String!,
-    timeStart: DateTime!,
-    timeEnd: DateTime!,
+    input: AppointmentInput
   ): Appointment!
+  updateAppointment(
+    _id: ID!, 
+    input: AppointmentInput
+  ): Appointment
+  deleteAppointment(
+    _id: ID!
+  ) : Appointment
   createProduct(
     input: ProductInput
   ) : Product
@@ -65,34 +69,45 @@ type User {
   appointments: [Appointment!]!
 }
 
+# Appointment model
 type Appointment {
   _id: ID!
   title: String!
   description: String!
-  timeStart: DateTime!
-  timeEnd: DateTime!
+  # dateStart: Date!
+  # dateEnd: Date!
+  timeStart: Time!
+  timeEnd: Time!
   deleted: Boolean
   # createdBy: User
   # follows: [Follow!]!
   # createdAt: DateTime!
 }
+input AppointmentInput {
+  title: String!
+  description: String!
+  # dateStart: Date!
+  # dateEnd: Date!
+  timeStart: Time!
+  timeEnd: Time!
+ }
 
+# Product model
 type Product {
   _id: ID!
   title: String!
   qty: Int
 }
+input ProductInput {
+  title: String!
+  qty: Int
+ }
 
 type Follow {
   _id: ID!
   appointment: Appointment!
   user: User!
 }
-
-input ProductInput {
-  title: String!
-  qty: Int
- }
 
 
 input AppointmentOrderByInput {
@@ -107,3 +122,4 @@ enum Sort {
 }
 
 scalar DateTime
+scalar Time

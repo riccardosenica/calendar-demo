@@ -2,11 +2,13 @@ import React from 'react';
 import Appointment from './Appointment';
 import { useQuery, gql } from '@apollo/client';
 
-const APPOINTMENTS_QUERY = gql`
+export const APPOINTMENTS_QUERY = gql`
   {
     allAppointments{
       title
       description
+      # dateStart
+      # dateEnd
       timeStart
       timeEnd
     }
