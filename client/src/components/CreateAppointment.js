@@ -10,8 +10,10 @@ const CREATE_APPOINTMENT_MUTATION = gql`
   mutation CreateAppointmentMutation(
     $title: String!
     $description: String!
+    $timeStart: String!
+    $timeEnd: String!
   ) {
-    createAppointment(title: $title, description: $description) {
+    createAppointment(title: $title, description: $description, timeStart: $timeStart, timeEnd: $timeEnd) {
       id
       title
       description

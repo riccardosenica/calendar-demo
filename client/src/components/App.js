@@ -4,6 +4,7 @@ import Header from './Header';
 import { Switch, Route } from 'react-router-dom';
 // import ProductList from './ProductList';
 import AppointmentList from './AppointmentList';
+import Login from './Login';
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
           {/* <Route exact path="/" component={ProductList} /> */}
           <Route exact path="/" component={AppointmentList} />
           <Route exact path="/create" component={CreateAppointment} />
+          <Route exact path="/login" component={Login} />
         </Switch>
       </div>
     </div>

@@ -8,6 +8,7 @@ type Query {
   ): Feed!
   allProducts: [Product]
   allAppointments: [Appointment]
+  allUsers: [User]
   users: [User!]!
 }
 
@@ -39,9 +40,7 @@ type Mutation {
     _id: ID!
   ) : Product
   signup(
-    email: String!
-    password: String!
-    name: String!
+    input: UserInput
   ): AuthPayload
   login(
     email: String!, 
@@ -57,19 +56,26 @@ type Subscription {
   newFollow: Follow
 }
 
+#User Schemas
+type User {
+  _id: ID!
+  username: String!
+  email: String!
+  password: String!
+  # appointments: [Appointment!]!
+}
+input UserInput{
+  username: String!
+  email: String!
+  password: String!
+  # appointments: [Appointment!]!
+}
 type AuthPayload {
   token: String
   user: User
 }
 
-type User {
-  _id: ID!
-  name: String!
-  email: String!
-  appointments: [Appointment!]!
-}
-
-# Appointment model
+# Appointment schemas
 type Appointment {
   _id: ID!
   title: String!
@@ -91,8 +97,13 @@ input AppointmentInput {
   timeStart: Time!
   timeEnd: Time!
  }
+input AppointmentOrderByInput {
+  description: Sort
+  url: Sort
+  createdAt: Sort
+}
 
-# Product model
+# Product schemas
 type Product {
   _id: ID!
   title: String!
@@ -103,23 +114,17 @@ input ProductInput {
   qty: Int
  }
 
+# Follow schemas
 type Follow {
   _id: ID!
   appointment: Appointment!
   user: User!
 }
 
-
-input AppointmentOrderByInput {
-  description: Sort
-  url: Sort
-  createdAt: Sort
-}
-
+# General-purpose schemas
 enum Sort {
   asc
   desc
 }
-
 scalar DateTime
 scalar Time
