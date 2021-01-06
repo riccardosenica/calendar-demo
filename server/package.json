@@ -27,6 +27,7 @@
     "graphql-compose": "^7.23.0",
     "graphql-compose-connection": "^8.0.1",
     "graphql-compose-mongoose": "^9.0.0",
+    "graphql-depth-limit": "^1.1.0",
     "graphql-middleware": "^6.0.0",
     "graphql-tools": "^7.0.2",
     "jsonwebtoken": "8.5.1",

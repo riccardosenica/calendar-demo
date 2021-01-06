@@ -5,6 +5,7 @@ import { useQuery, gql } from '@apollo/client';
 export const APPOINTMENTS_QUERY = gql`
   {
     allAppointments{
+      _id
       title
       description
       start
@@ -18,12 +19,11 @@ const AppointmentList = () => {
   const { data } = useQuery(APPOINTMENTS_QUERY);
 
   if (data !== undefined) {
-    console.log(data.allAppointments);
     return (
       <div>
         {
           data.allAppointments.map((appointment) => (
-            <Appointment key={appointment.id} appointment={appointment} />
+            <Appointment key={appointment._id} appointment={appointment} />
           ))
         }
       </div>

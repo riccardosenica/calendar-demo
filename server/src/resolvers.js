@@ -66,55 +66,22 @@ export const resolvers = {
             };
         },
 
-        // async login(parent, args, context, info) {
-        //     console.log(args);
-        //     const user = await User.findOne({
-        //         email: args.email
-        //     });
-
-        //     if (!user) {
-        //         throw new Error('No such user found');
-        //     }
-
-        //     const pwd = await bcrypt.hash(args.password, 10);
-        //     console.log(pwd);
-        //     console.log(args.password)
-        //     console.log(user.password);
-
-        //     const valid = await bcrypt.compare(
-        //         args.password,
-        //         user.password
-        //     );
-        //     if (!valid) {
-        //         throw new Error('Invalid password');
-        //     }
-
-        //     const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
-
-        //     return {
-        //         token,
-        //         user
-        //     };
-        // },
-
         async createAppointment(parent, args, context, info) {
             return await Appointment.create(args);
         },
-        async updateAppointment(root, {
-            _id,
-            input
-        }) {
+        async updateAppointment(parent, args, context, info) {
             return await Appointment.findOneAndUpdate({
-                _id
-            }, input, {
+                args
+            }, args, {
                 new: true
             })
         },
-        async deleteAppointment(root, {
-            _id
-        }) {
-            return await Product.findOneAndRemove({
-                _id
+        async deleteAppointment(parent, args, context, info) {
+            console.log(args);
+            return await Appointment.deleteOne({ _id: args._id }).then(function () {
+                console.log("Data deleted"); // Success 
+            }).catch(function (error) {
+                console.log(error); // Failure 
             });
         },
         async createProduct(root, {

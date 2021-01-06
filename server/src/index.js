@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import { graphqlHTTP } from 'express-graphql';
+import depthLimit from 'graphql-depth-limit'
 import { ApolloServer, PubSub } from 'apollo-server-express';
 import mongoose from 'mongoose';
 import schema from './schema.js';
@@ -26,6 +27,7 @@ app.use(cors());
 
 app.use('/djhb58fytkh476dk45yh49', graphqlHTTP({
   schema: schema,
+  validationRules: [depthLimit(3)],
   graphiql: true
 }));
 

@@ -24,11 +24,12 @@ type Mutation {
     description: String!
     start: String!
     end: String!
-    # input: AppointmentInput
   ): Appointment!
   updateAppointment(
     _id: ID!, 
-    input: AppointmentInput
+    title: String!
+    description: String!
+    start: String!
   ): Appointment
   deleteAppointment(
     _id: ID!

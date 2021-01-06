@@ -1,12 +1,29 @@
 import React from 'react';
+import { useMutation, gql } from '@apollo/client';
+
+const DELETE_APPOINTMENT_MUTATION = gql`
+  mutation DeleteAppointmentMutation($_id: ID!) {
+    deleteAppointment(_id: $_id){
+        _id
+    }
+  }
+`;
+
 
 const Appointment = (props) => {
     const { appointment } = props;
+
+    const [deleteAppointment] = useMutation(DELETE_APPOINTMENT_MUTATION, {
+        variables: { _id: appointment._id }
+    })
+
+    console.log(appointment._id);
+
     return (
         <div>
             <div>
-                <b>{appointment.title}</b> starts at {appointment.start}, ends at {appointment.end}. It is described as "{appointment.description}"
-      </div>
+                <b><div className="ml1 gray f11" style={{ cursor: 'pointer' }} onClick={deleteAppointment}>[X]</div>{appointment.title}</b> starts at {appointment.start}, ends at {appointment.end}. It is described as "{appointment.description}"
+            </div>
         </div>
     );
 };
