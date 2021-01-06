@@ -12,6 +12,12 @@ export const resolvers = {
         async allAppointments() {
             return await Appointment.find();
         },
+        async oneAppointment(root, args, context, info) {
+            console.log(args);
+            return await Appointment.findOne({
+                _id: args._id
+            });
+        },
         async allProducts() {
             return await Product.find();
         },

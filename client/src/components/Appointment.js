@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router';
 import { useMutation, gql } from '@apollo/client';
 
 const DELETE_APPOINTMENT_MUTATION = gql`
@@ -11,17 +12,24 @@ const DELETE_APPOINTMENT_MUTATION = gql`
 
 const Appointment = (props) => {
     const { appointment } = props;
+    const history = useHistory();
 
     const [deleteAppointment] = useMutation(DELETE_APPOINTMENT_MUTATION, {
-        variables: { _id: appointment._id }
+        variables: {
+            _id: appointment._id
+        },
+        onCompleted: () => history.push('/')
     })
 
-    console.log(appointment._id);
+    const updateAppointment = () => {
+        let path = `/update/${appointment._id}`;
+        history.push(path);
+    }
 
     return (
         <div>
             <div>
-                <b><div className="ml1 gray f11" style={{ cursor: 'pointer' }} onClick={deleteAppointment}>[X]</div>{appointment.title}</b> starts at {appointment.start}, ends at {appointment.end}. It is described as "{appointment.description}"
+                <b>{appointment.title}</b> starts at {appointment.start}, ends at {appointment.end}. It is described as "{appointment.description}"<button onClick={deleteAppointment}>DELETE</button><button onClick={updateAppointment}>EDIT</button>
             </div>
         </div>
     );
@@ -29,8 +37,6 @@ const Appointment = (props) => {
 
 export default Appointment;
 
-// import React from 'react';
-// import { useMutation, gql } from '@apollo/client';
 // import { AUTH_TOKEN, APPOINTMENTS_PER_PAGE } from '../constants';
 // import { timeDifferenceForDate } from '../utils'
 // import { FEED_QUERY } from './AppointmentList'

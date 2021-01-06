@@ -8,6 +8,9 @@ type Query {
   ): Feed!
   allProducts: [Product]
   allAppointments: [Appointment]
+  oneAppointment(
+    _id: ID!
+  ): Appointment
   allUsers: [User]
   users: [User!]!
 }

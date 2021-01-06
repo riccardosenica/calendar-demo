@@ -1,12 +1,13 @@
 import React from 'react';
-import CreateAppointment from './CreateAppointment';
 import Header from './Header';
+import Login from './Login';
+import AppointmentList from './AppointmentList';
+import CreateAppointment from './CreateAppointment';
+import UpdateAppointemnt from './UpdateAppointment';
+import Calendar from './Calendar';
 import { Switch, Route } from 'react-router-dom';
 // import ProductList from './ProductList';
-import AppointmentList from './AppointmentList';
 import Events from './Events';
-import Login from './Login';
-import Calendar from './Calendar';
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
           <Route exact path="/" component={AppointmentList} />
           {/* <Route exact path="/events" component={Events} /> */}
           <Route exact path="/create" component={CreateAppointment} />
+          <Route exact path="/update/:_id" component={UpdateAppointemnt} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/calendar" component={Calendar} />
         </Switch>

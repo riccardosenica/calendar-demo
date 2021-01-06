@@ -9,9 +9,12 @@ const Header = () => {
     return (
         <div className="flex pa1 justify-between nowrap orange">
             <div className="flex flex-fixed black">
-                <div className="fw7 mr1">Store!</div>
                 <Link to="/" className="ml1 no-underline black">Top list</Link>
-                <div className="ml1"> --- </div>
+            </div>
+            <div className="flex flex-fixed black">
+                <Link to="/calendar" className="ml1 no-underline black">Calendar</Link>
+            </div>
+            <div className="flex flex-fixed">
                 <Link to="/create" className="ml1 no-underline black">Create new</Link>
             </div>
             <div className="flex flex-fixed">
