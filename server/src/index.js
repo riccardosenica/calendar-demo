@@ -18,13 +18,13 @@ dotenv.config();
 
 app.use(cors());
 
-app.get('/', (req, res) => {
-  res.json({
-    msg: 'GraphQL home!'
-  })
-});
+// app.get('/', (req, res) => {
+//   res.json({
+//     msg: 'GraphQL home!'
+//   })
+// });
 
-app.use('/graphql', graphqlHTTP({
+app.use('/djhb58fytkh476dk45yh49', graphqlHTTP({
   schema: schema,
   graphiql: true
 }));

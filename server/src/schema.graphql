@@ -40,12 +40,14 @@ type Mutation {
     _id: ID!
   ) : Product
   signup(
-    input: UserInput
+    email: String!
+    password: String!
+    username: String!
   ): AuthPayload
   login(
     email: String!, 
     password: String!
-  ): AuthPayload
+    ): AuthPayload
   follow(
     appointmentId: ID!
     ): Follow
@@ -80,8 +82,6 @@ type Appointment {
   _id: ID!
   title: String!
   description: String!
-  # dateStart: Date!
-  # dateEnd: Date!
   timeStart: Time!
   timeEnd: Time!
   deleted: Boolean
@@ -92,8 +92,6 @@ type Appointment {
 input AppointmentInput {
   title: String!
   description: String!
-  # dateStart: Date!
-  # dateEnd: Date!
   timeStart: Time!
   timeEnd: Time!
  }

@@ -20,15 +20,18 @@ export const resolvers = {
         },
     },
     Mutation: {
-        async signup(root, {
-            input
-        }) {
-            console.log(input.password);
-            input.password = await bcrypt.hash(input.password, 10);
+        async signup(root, args, context, info) {
+            console.log(args, args.password);
 
-            const user = await User.create(input);
+            args.password = await bcrypt.hash(args.password, 10);
+
+            console.log("pre ", args.password)
+
+            const user = await User.create(args);
 
             const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
+
+            console.log("post", user.password);
 
             return {
                 token,
@@ -36,23 +39,19 @@ export const resolvers = {
             };
         },
 
-        async login(root, {
-            email, password
-        }) {
+        async login(parent, args, context, info) {
+            console.log(args);
             const user = await User.findOne({
-                email: email
+                email: args.email
             });
-
             if (!user) {
                 throw new Error('No such user found');
             }
 
-            const pwd = await bcrypt.hash(password, 10);
-            console.log(pwd);
             console.log(user.password);
 
             const valid = await bcrypt.compare(
-                password,
+                args.password,
                 user.password
             );
             if (!valid) {
@@ -66,6 +65,37 @@ export const resolvers = {
                 user
             };
         },
+
+        // async login(parent, args, context, info) {
+        //     console.log(args);
+        //     const user = await User.findOne({
+        //         email: args.email
+        //     });
+
+        //     if (!user) {
+        //         throw new Error('No such user found');
+        //     }
+
+        //     const pwd = await bcrypt.hash(args.password, 10);
+        //     console.log(pwd);
+        //     console.log(args.password)
+        //     console.log(user.password);
+
+        //     const valid = await bcrypt.compare(
+        //         args.password,
+        //         user.password
+        //     );
+        //     if (!valid) {
+        //         throw new Error('Invalid password');
+        //     }
+
+        //     const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
+
+        //     return {
+        //         token,
+        //         user
+        //     };
+        // },
 
         async createAppointment(root, {
             input

@@ -5,6 +5,7 @@ import { Switch, Route } from 'react-router-dom';
 // import ProductList from './ProductList';
 import AppointmentList from './AppointmentList';
 import Login from './Login';
+import Calendar from './Calendar';
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
           <Route exact path="/" component={AppointmentList} />
           <Route exact path="/create" component={CreateAppointment} />
           <Route exact path="/login" component={Login} />
+          <Route exact path="/calendar" component={Calendar} />
         </Switch>
       </div>
     </div>

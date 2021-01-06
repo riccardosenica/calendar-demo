@@ -7,8 +7,6 @@ export const APPOINTMENTS_QUERY = gql`
     allAppointments{
       title
       description
-      # dateStart
-      # dateEnd
       timeStart
       timeEnd
     }
