@@ -9,7 +9,6 @@ const DELETE_APPOINTMENT_MUTATION = gql`
   }
 `;
 
-
 const Appointment = (props) => {
     const { appointment } = props;
 
