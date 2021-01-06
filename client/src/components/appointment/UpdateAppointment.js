@@ -14,6 +14,7 @@ const ONE_APPOINTMENT_QUERY = gql`
       _id
       title
       description
+      type
       start
       end
     }
@@ -24,14 +25,16 @@ const UPDATE_APPOINTMENT_MUTATION = gql`
   mutation UpdateAppointmentMutation(
     $_id: ID!
     $title: String!
-    $description: String!
-    $start: String!
-    $end: String!
+    $description: String
+    $type: String!
+    $start: DateTime!
+    $end: DateTime!
   ) {
     updateAppointment(title: $title, description: $description, start: $start, end: $end) {
       _id
       title
       description
+      type
       start
       end
     }
@@ -48,11 +51,12 @@ const UpdateAppointment = ({ match: { params: { _id } } }) => {
     });
 
     let [formState, setFormState] = useState({
-        _id: '',
-        title: '',
-        description: '',
-        start: '',
-        end: ''
+        // _id: '',
+        // title: '',
+        // description: '',
+        // type: '',
+        // start: '',
+        // end: ''
     });
 
     const [updateAppointment] = useMutation(UPDATE_APPOINTMENT_MUTATION, {
@@ -60,6 +64,7 @@ const UpdateAppointment = ({ match: { params: { _id } } }) => {
             _id: formState._id,
             title: formState.title,
             description: formState.description,
+            type: formState.type,
             start: formState.start,
             end: formState.end
         },
@@ -69,6 +74,9 @@ const UpdateAppointment = ({ match: { params: { _id } } }) => {
     if (data === undefined) {
         return <div>Loading...</div>
     } else {
+        // setFormState({
+        //     formState.title= data.oneAppointment.title
+        // })
 
         return (
             <div>
@@ -88,7 +96,7 @@ const UpdateAppointment = ({ match: { params: { _id } } }) => {
                         />
                         <input
                             className="mb2"
-                            value={data.oneAppointment.title}
+                            value={formState.title}
                             onChange={(e) =>
                                 setFormState({
                                     ...formState,
@@ -105,6 +113,18 @@ const UpdateAppointment = ({ match: { params: { _id } } }) => {
                                 setFormState({
                                     ...formState,
                                     description: e.target.value
+                                })
+                            }
+                            type="text"
+                            placeholder="Input description"
+                        />
+                        <input
+                            className="mb2"
+                            value={data.oneAppointment.type}
+                            onChange={(e) =>
+                                setFormState({
+                                    ...formState,
+                                    type: e.target.value
                                 })
                             }
                             type="text"

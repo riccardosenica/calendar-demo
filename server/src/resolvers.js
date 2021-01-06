@@ -77,6 +77,7 @@ export const resolvers = {
             return await Appointment.create(args);
         },
         async updateAppointment(parent, args, context, info) {
+            console.log(args);
             return await Appointment.findOneAndUpdate({
                 args
             }, args, {
