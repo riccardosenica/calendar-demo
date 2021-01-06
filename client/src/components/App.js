@@ -4,6 +4,7 @@ import Header from './Header';
 import { Switch, Route } from 'react-router-dom';
 // import ProductList from './ProductList';
 import AppointmentList from './AppointmentList';
+import Events from './Events';
 import Login from './Login';
 import Calendar from './Calendar';
 
@@ -15,6 +16,7 @@ const App = () => {
         <Switch>
           {/* <Route exact path="/" component={ProductList} /> */}
           <Route exact path="/" component={AppointmentList} />
+          {/* <Route exact path="/events" component={Events} /> */}
           <Route exact path="/create" component={CreateAppointment} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/calendar" component={Calendar} />

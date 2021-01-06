@@ -97,10 +97,8 @@ export const resolvers = {
         //     };
         // },
 
-        async createAppointment(root, {
-            input
-        }) {
-            return await Appointment.create(input);
+        async createAppointment(parent, args, context, info) {
+            return await Appointment.create(args);
         },
         async updateAppointment(root, {
             _id,

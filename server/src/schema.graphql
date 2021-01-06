@@ -20,7 +20,11 @@ type Feed {
 
 type Mutation {
   createAppointment(
-    input: AppointmentInput
+    title: String!
+    description: String!
+    start: String!
+    end: String!
+    # input: AppointmentInput
   ): Appointment!
   updateAppointment(
     _id: ID!, 
@@ -82,8 +86,8 @@ type Appointment {
   _id: ID!
   title: String!
   description: String!
-  timeStart: Time!
-  timeEnd: Time!
+  start: Time!
+  end: Time!
   deleted: Boolean
   # createdBy: User
   # follows: [Follow!]!
@@ -92,8 +96,8 @@ type Appointment {
 input AppointmentInput {
   title: String!
   description: String!
-  timeStart: Time!
-  timeEnd: Time!
+  start: Time!
+  end: Time!
  }
 input AppointmentOrderByInput {
   description: Sort

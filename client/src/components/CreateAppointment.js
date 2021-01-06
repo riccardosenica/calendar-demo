@@ -10,15 +10,14 @@ const CREATE_APPOINTMENT_MUTATION = gql`
   mutation CreateAppointmentMutation(
     $title: String!
     $description: String!
-    $timeStart: String!
-    $timeEnd: String!
+    $start: String!
+    $end: String!
   ) {
-    createAppointment(title: $title, description: $description, timeStart: $timeStart, timeEnd: $timeEnd) {
-      id
+    createAppointment(title: $title, description: $description, start: $start, end: $end) {
       title
       description
-      timeStart
-      timeEnd
+      start
+      end
     }
   }
 `;
@@ -29,46 +28,46 @@ const CreateAppointment = () => {
     const [formState, setFormState] = useState({
         title: '',
         description: '',
-        timeStart: '',
-        timeEnd: ''
+        start: '',
+        end: ''
     });
 
     const [createAppointment] = useMutation(CREATE_APPOINTMENT_MUTATION, {
         variables: {
             title: formState.title,
             description: formState.description,
-            timeStart: formState.timeStart,
-            timeEnd: formState.timeEnd
+            start: formState.start,
+            end: formState.end
         },
-        update: (cache, { data: { createAppointment } }) => {
-            const take = APPOINTMENTS_PER_PAGE;
-            const skip = 0;
-            const orderBy = { createdAt: 'desc' };
+        // update: (cache, { data: { createAppointment } }) => {
+        //     const take = APPOINTMENTS_PER_PAGE;
+        //     const skip = 0;
+        //     const orderBy = { createdAt: 'desc' };
 
-            const data = cache.readQuery({
-                query: APPOINTMENTS_QUERY,
-                variables: {
-                    take,
-                    skip,
-                    orderBy
-                }
-            });
+        //     const data = cache.readQuery({
+        //         query: APPOINTMENTS_QUERY,
+        //         variables: {
+        //             take,
+        //             skip,
+        //             orderBy
+        //         }
+        //     });
 
-            cache.writeQuery({
-                query: APPOINTMENTS_QUERY,
-                data: {
-                    allAppointments: {
-                        appointments: [createAppointment, ...data.allAppointments.appointments]
-                    }
-                },
-                variables: {
-                    take,
-                    skip,
-                    orderBy
-                }
-            });
-        },
-        onCompleted: () => history.push('/new/1')
+        //     cache.writeQuery({
+        //         query: APPOINTMENTS_QUERY,
+        //         data: {
+        //             allAppointments: {
+        //                 appointments: [createAppointment, ...data.allAppointments]
+        //             }
+        //         },
+        //         variables: {
+        //             take,
+        //             skip,
+        //             orderBy
+        //         }
+        //     });
+        // },
+        onCompleted: () => history.push('/')
     });
 
     return (
@@ -106,38 +105,26 @@ const CreateAppointment = () => {
                     />
                     <Datetime
                         className="mb2"
-                        value={formState.timeStart}
+                        value={formState.start}
                         onChange={(e) =>
                             setFormState({
                                 ...formState,
-                                timeStart: e
+                                start: e
                             })
                         }
                     />
                     <Datetime
                         className="mb2"
-                        value={formState.timeStart}
+                        value={formState.end}
                         onChange={(e) =>
                             setFormState({
                                 ...formState,
-                                timeEnd: e
+                                end: e
                             })
                         }
                     />
-                    {/* <input
-                        className="mb2"
-                        value={formState.timeEnd}
-                        onChange={(e) =>
-                            setFormState({
-                                ...formState,
-                                timeStart: e.target.value
-                            })
-                        }
-                        type="text"
-                        placeholder="Input end time"
-                    /> */}
                 </div>
-                <button type="submit">Submit</button>
+                <button type="submit">Create appointment</button>
             </form>
         </div>
     );

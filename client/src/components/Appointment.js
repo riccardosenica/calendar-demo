@@ -5,7 +5,7 @@ const Appointment = (props) => {
     return (
         <div>
             <div>
-                <b>{appointment.title}</b> starts at {appointment.timeStart}, ends at {appointment.timeEnd}. It is described as "{appointment.description}"
+                <b>{appointment.title}</b> starts at {appointment.start}, ends at {appointment.end}. It is described as "{appointment.description}"
       </div>
         </div>
     );

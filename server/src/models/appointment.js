@@ -9,11 +9,11 @@ const AppointmentSchema = new Schema({
         type: String,
         required: false
     },
-    timeStart: {
+    start: {
         type: Date,
         required: true
     },
-    timeEnd: {
+    end: {
         type: Date,
         required: true
     },

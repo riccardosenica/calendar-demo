@@ -7,8 +7,8 @@ export const APPOINTMENTS_QUERY = gql`
     allAppointments{
       title
       description
-      timeStart
-      timeEnd
+      start
+      end
     }
   }
 `;
@@ -17,9 +17,8 @@ const AppointmentList = () => {
 
   const { data } = useQuery(APPOINTMENTS_QUERY);
 
-  console.log("Data:", data);
-
   if (data !== undefined) {
+    console.log(data.allAppointments);
     return (
       <div>
         {
