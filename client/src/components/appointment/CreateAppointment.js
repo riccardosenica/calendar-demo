@@ -1,93 +1,45 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
-import { useMutation, gql, useQuery } from '@apollo/client';
-import { APPOINTMENTS_PER_PAGE } from '../constants';
+import { useMutation, gql } from '@apollo/client';
+import { APPOINTMENTS_PER_PAGE } from '../../constants';
 import { APPOINTMENTS_QUERY } from './AppointmentList';
 import Datetime from 'react-datetime';
 import "react-datetime/css/react-datetime.css";
 
-const ONE_APPOINTMENT_QUERY = gql`
-  query OneAppointmentQuery(
-      $_id: ID!
-    ){
-    oneAppointments(_id: $id){
-      _id
-      title
-      description
-      start
-      end
-    }
-  }
-`;
-
-const UPDATE_APPOINTMENT_MUTATION = gql`
-  mutation UpdateAppointmentMutation(
-    $_id: ID!
+const CREATE_APPOINTMENT_MUTATION = gql`
+  mutation CreateAppointmentMutation(
     $title: String!
-    $description: String!
-    $start: String!
-    $end: String!
+    $description: String
+    $type: String!
+    $start: DateTime!
+    $end: DateTime!
   ) {
-    updateAppointment(title: $title, description: $description, start: $start, end: $end) {
-      _id
+    createAppointment(title: $title, description: $description, type: $type, start: $start, end: $end) {
       title
       description
+      type
       start
       end
     }
   }
 `;
 
-const UpdateAppointment = ({ match: { params: { _id } } }) => {
-    console.log(_id);
+const CreateAppointment = () => {
     const history = useHistory();
 
-    // const { data } = useQuery(ONE_APPOINTMENT_QUERY, {
-    //     variables: {
-    //         _id: _id
-    //     }
-    // });
-
-    let [formState, setFormState] = useState({
-        _id: '',
+    const [formState, setFormState] = useState({
         title: '',
         description: '',
+        type: '',
         start: '',
         end: ''
     });
 
-    const {
-        data,
-        loading,
-        error
-    } = useQuery(ONE_APPOINTMENT_QUERY, {
+    const [createAppointment] = useMutation(CREATE_APPOINTMENT_MUTATION, {
         variables: {
-            _id: _id
-        }
-    });
-
-    if (loading) {
-        console.log("yes")
-    } else {
-        console.log(data);
-        // [formState, setFormState] = useState({
-        //     _id: data._id,
-        //     title: data.title,
-        //     description: data.description,
-        //     start: data.start,
-        //     end: data.end
-        // });
-        // formState.setFormState({
-        //     title: "ykkg"
-        // })
-    }
-
-
-    const [updateAppointment] = useMutation(UPDATE_APPOINTMENT_MUTATION, {
-        variables: {
-            _id: formState._id,
             title: formState.title,
             description: formState.description,
+            type: formState.type,
             start: formState.start,
             end: formState.end
         },
@@ -127,7 +79,7 @@ const UpdateAppointment = ({ match: { params: { _id } } }) => {
             <form
                 onSubmit={(e) => {
                     e.preventDefault();
-                    updateAppointment();
+                    createAppointment();
                 }}
             >
                 <div className="flex flex-column mt3">
@@ -155,6 +107,18 @@ const UpdateAppointment = ({ match: { params: { _id } } }) => {
                         type="text"
                         placeholder="Input description"
                     />
+                    <input
+                        className="mb2"
+                        value={formState.type}
+                        onChange={(e) =>
+                            setFormState({
+                                ...formState,
+                                type: e.target.value
+                            })
+                        }
+                        type="text"
+                        placeholder="Input Type"
+                    />
                     <Datetime
                         className="mb2"
                         value={formState.start}
@@ -176,10 +140,10 @@ const UpdateAppointment = ({ match: { params: { _id } } }) => {
                         }
                     />
                 </div>
-                <button type="submit">Update appointment</button>
+                <button type="submit">Create appointment</button>
             </form>
         </div>
     );
 };
 
-export default UpdateAppointment;
+export default CreateAppointment;

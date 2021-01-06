@@ -2,8 +2,8 @@ import React from 'react'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from "@fullcalendar/interaction";
-import { useQuery, gql } from '@apollo/client';
-import { APPOINTMENTS_QUERY } from './AppointmentList';
+import { useQuery } from '@apollo/client';
+import { APPOINTMENTS_QUERY } from './appointment/AppointmentList';
 
 export default function Calendar() {
     const { data, loading } = useQuery(APPOINTMENTS_QUERY);

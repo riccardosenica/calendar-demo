@@ -10,10 +10,10 @@ import dotenv from 'dotenv';
 export const resolvers = {
     Query: {
         async allAppointments() {
-            return await Appointment.find();
+            return await Appointment.find({ deleted: false })
+            // return await Appointment.find();
         },
         async oneAppointment(root, args, context, info) {
-            console.log(args);
             return await Appointment.findOne({
                 _id: args._id
             });
@@ -73,6 +73,7 @@ export const resolvers = {
         },
 
         async createAppointment(parent, args, context, info) {
+            args.deleted = false;
             return await Appointment.create(args);
         },
         async updateAppointment(parent, args, context, info) {
@@ -83,12 +84,8 @@ export const resolvers = {
             })
         },
         async deleteAppointment(parent, args, context, info) {
-            console.log(args);
-            return await Appointment.deleteOne({ _id: args._id }).then(function () {
-                console.log("Data deleted"); // Success 
-            }).catch(function (error) {
-                console.log(error); // Failure 
-            });
+            return await Appointment.findOneAndUpdate({ _id: args._id }, { deleted: true })
+            // return await Appointment.deleteOne({ _id: args._id });
         },
         async createProduct(root, {
             input

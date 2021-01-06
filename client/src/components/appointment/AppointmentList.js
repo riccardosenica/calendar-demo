@@ -16,7 +16,7 @@ export const APPOINTMENTS_QUERY = gql`
 
 const AppointmentList = () => {
 
-  const { data } = useQuery(APPOINTMENTS_QUERY);
+  const { data, loading } = useQuery(APPOINTMENTS_QUERY);
 
   if (data !== undefined) {
     return (
@@ -40,11 +40,8 @@ const AppointmentList = () => {
 
 export default AppointmentList;
 
-// import React from 'react';
-// import Appointment from './Appointment';
 // import { useHistory } from 'react-router';
 // import { APPOINTMENTS_PER_PAGE } from '../constants';
-// import { useQuery, gql } from '@apollo/client';
 // import { Link } from 'react-router-dom';
 
 // export const FEED_QUERY = gql`

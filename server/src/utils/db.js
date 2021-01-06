@@ -19,6 +19,9 @@ const connection = mongoose.connect(process.env.MONGODB_URI, {
 });
 
 mongoose.set('useCreateIndex', true);
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useUnifiedTopology', true);
 
 connection
     .then(db => db)

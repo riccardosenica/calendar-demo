@@ -9,6 +9,10 @@ const AppointmentSchema = new Schema({
         type: String,
         required: false
     },
+    type: {
+        type: String,
+        required: true
+    },
     start: {
         type: Date,
         required: true

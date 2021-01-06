@@ -24,15 +24,20 @@ type Feed {
 type Mutation {
   createAppointment(
     title: String!
-    description: String!
-    start: String!
-    end: String!
+    description: String
+    type: String!
+    start: DateTime!
+    end: DateTime!
+    deleted: Boolean
   ): Appointment!
   updateAppointment(
     _id: ID!, 
     title: String!
-    description: String!
-    start: String!
+    description: String
+    type: String!
+    start: DateTime!
+    end: DateTime!
+    deleted: Boolean
   ): Appointment
   deleteAppointment(
     _id: ID!
@@ -89,9 +94,10 @@ type AuthPayload {
 type Appointment {
   _id: ID!
   title: String!
-  description: String!
-  start: Time!
-  end: Time!
+  description: String
+  type: String!
+  start: DateTime!
+  end: DateTime!
   deleted: Boolean
   # createdBy: User
   # follows: [Follow!]!
@@ -99,14 +105,16 @@ type Appointment {
 }
 input AppointmentInput {
   title: String!
-  description: String!
-  start: Time!
-  end: Time!
+  description: String
+  type: String!
+  start: DateTime!
+  end: DateTime!
+  deleted: Boolean
  }
 input AppointmentOrderByInput {
-  description: Sort
-  url: Sort
-  createdAt: Sort
+  title: Sort
+  desc: Sort
+  # createdAt: Sort
 }
 
 # Product schemas
