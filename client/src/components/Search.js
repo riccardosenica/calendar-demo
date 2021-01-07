@@ -11,19 +11,19 @@ const FEED_SEARCH_QUERY = gql`
       id
       links {
         id
-        url
+        title
         description
-        createdAt
+        type
         createdBy {
           id
-          name
+          username
         }
-        follows {
-          id
-          user {
-            id
-          }
-        }
+        # follows {
+        #   id
+        #   user {
+        #     id
+        #   }
+        # }
       }
     }
   }

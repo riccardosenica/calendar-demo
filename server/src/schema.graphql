@@ -99,7 +99,7 @@ type Appointment {
   start: DateTime!
   end: DateTime!
   deleted: Boolean
-  # createdBy: User
+  createdBy: User
   # follows: [Follow!]!
   # createdAt: DateTime!
 }

@@ -9,6 +9,36 @@ import './utils/db.js';
 import fs from 'fs';
 import path from 'path';
 import cors from 'cors';
+// import getUserId from './utils';
+
+
+import jwt from 'jsonwebtoken';
+const APP_SECRET = 'GraphQL-is-aw3some';
+
+function getTokenPayload(token) {
+  return jwt.verify(token, APP_SECRET);
+}
+
+function getUserId(req, authToken) {
+  if (req) {
+    const authHeader = req.headers.authorization;
+    if (authHeader) {
+      const token = authHeader.replace('Bearer ', '');
+      if (!token) {
+        throw new Error('No token found');
+      }
+      const { userId } = getTokenPayload(token);
+      return userId;
+    }
+  } else if (authToken) {
+    const { userId } = getTokenPayload(authToken);
+    return userId;
+  }
+
+  throw new Error('Not authenticated');
+}
+
+
 
 const moduleURL = new URL(import.meta.url);
 const __dirname = path.dirname(moduleURL.pathname);
@@ -18,12 +48,6 @@ const pubsub = new PubSub();
 dotenv.config();
 
 app.use(cors());
-
-// app.get('/', (req, res) => {
-//   res.json({
-//     msg: 'GraphQL home!'
-//   })
-// });
 
 app.use('/djhb58fytkh476dk45yh49', graphqlHTTP({
   schema: schema,
@@ -39,7 +63,7 @@ const server = new ApolloServer({
   // schema,
   cors: true,
   playground: process.env.NODE_ENV === 'development' ? true : false,
-  context: async ({ req }) => {
+  context: ({ req }) => {
     //     if (!db) {
     //       try {
     //         if (!dbClient.isConnected()) await dbClient.connect()
@@ -53,10 +77,10 @@ const server = new ApolloServer({
       ...req,
       mongoose,
       pubsub,
-      // userId:
-      //   req && req.headers.authorization
-      //     ? getUserId(req)
-      //     : null
+      userId:
+        req && req.headers.authorization
+          ? getUserId(req)
+          : null
     }
   },
   // subscriptions: {
@@ -102,15 +126,6 @@ app.listen({ port: process.env.PORT }, () => {
 });
 
 
-
-
-
-
-// const { ApolloServer, PubSub } = require('apollo-server');
-// // const { Cors } = require('cors');
-// // const { Express } = require('express');
-
-// const express = require("express");
 // const { graphqlHTTP } = require('express-graphql');
 // const mongoose = require("mongoose");
 // const graphqlSchema = require("./graphql/schema/schema")
@@ -128,10 +143,6 @@ app.listen({ port: process.env.PORT }, () => {
 // const fs = require('fs');
 // const path = require('path');
 // const { getUserId } = require('./utils');
-
-// const pubsub = new PubSub();
-
-// const app = express()
 
 // const graphqlResolvers = {
 //   appointmentResolvers,

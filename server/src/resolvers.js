@@ -3,7 +3,7 @@ import Product from './models/product.js';
 import Appointment from './models/appointment.js';
 import User from './models/user.js'
 // import { createAppointment } from './resolvers/Mutation.js';
-import bcrypt from 'bcryptjs';
+import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
@@ -27,17 +27,11 @@ export const resolvers = {
     },
     Mutation: {
         async signup(root, args, context, info) {
-            console.log(args, args.password);
-
-            args.password = await bcrypt.hash(args.password, 10);
-
-            console.log("pre ", args.password)
-
-            const user = await User.create(args);
+            var user = await User.create(args);
+            user.password = user.generateHash(args.password);
+            user.save();
 
             const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
-
-            console.log("post", user.password);
 
             return {
                 token,
@@ -46,7 +40,10 @@ export const resolvers = {
         },
 
         async login(parent, args, context, info) {
-            console.log(args);
+            console.log(context);
+            const { userId } = context;
+            console.log(userId);
+
             const user = await User.findOne({
                 email: args.email
             });
@@ -54,17 +51,11 @@ export const resolvers = {
                 throw new Error('No such user found');
             }
 
-            console.log(user.password);
-
-            const valid = await bcrypt.compare(
-                args.password,
-                user.password
-            );
-            if (!valid) {
+            if (!user.validPassword(args.password)) {
                 throw new Error('Invalid password');
             }
 
-            const token = jwt.sign({ userId: user.id }, APP_SECRET);
+            const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
 
             return {
                 token,
@@ -73,7 +64,11 @@ export const resolvers = {
         },
 
         async createAppointment(parent, args, context, info) {
+            console.log(context);
+            const { userId } = context;
+            console.log("userID", userId);
             args.deleted = false;
+            args.createdBy = userId;
             return await Appointment.create(args);
         },
         async updateAppointment(parent, args, context, info) {

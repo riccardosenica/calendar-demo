@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 const APP_SECRET = 'GraphQL-is-aw3some';
 
 function getTokenPayload(token) {
