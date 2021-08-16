@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import { useMutation, gql, useQuery } from '@apollo/client';
-import { APPOINTMENTS_PER_PAGE } from '../../constants';
-import { APPOINTMENTS_QUERY } from './AppointmentList';
+// import { APPOINTMENTS_PER_PAGE } from '../../constants';
+// import { APPOINTMENTS_QUERY } from './AppointmentList';
 import Datetime from 'react-datetime';
 import "react-datetime/css/react-datetime.css";
 

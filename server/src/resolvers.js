@@ -1,5 +1,5 @@
 import Appointment from './models/appointment.js';
-import User from './models/user.js'
+import User from './models/user.js';
 import jwt from 'jsonwebtoken';
 
 export const resolvers = {

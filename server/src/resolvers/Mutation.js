@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { APP_SECRET } = require('../utils');
 
-function createAppointment(parent, args, context, info) {
+function createAppointment(parent, args, context) {
   const { userId } = context;
 
   const newAppointment = context.mongo.appointment.create({
@@ -16,7 +16,7 @@ function createAppointment(parent, args, context, info) {
   return newAppointment;
 }
 
-async function signup(parent, args, context, info) {
+async function signup(parent, args, context) {
   const password = await bcrypt.hash(args.password, 10);
   const user = await context.mongo.user.create({
     data: { ...args, password }
@@ -30,7 +30,7 @@ async function signup(parent, args, context, info) {
   };
 }
 
-async function login(parent, args, context, info) {
+async function login(parent, args, context) {
   const user = await context.mongo.user.findUnique({
     where: { email: args.email }
   });
@@ -54,18 +54,18 @@ async function login(parent, args, context, info) {
   };
 }
 
-async function follow(parent, args, context, info) {
+async function follow(parent, args, context) {
   const { userId } = context;
   const follow = await context.mongo.follow.findUnique({
     where: {
       linkId_userId: {
         linkId: Number(args.linkId),
-        userId: userId
+        userId
       }
     }
   });
 
-  if (Boolean(follow)) {
+  if (follow) {
     throw new Error(
       `Already followed the appointment: ${args.linkId}`
     );

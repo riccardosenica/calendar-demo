@@ -5,6 +5,7 @@ import AppointmentList from './appointment/AppointmentList';
 import CreateAppointment from './appointment/CreateAppointment';
 import UpdateAppointemnt from './appointment/UpdateAppointment';
 import Calendar from './Calendar';
+import Search from './Search';
 import { Switch, Route } from 'react-router-dom';
 
 const App = () => {
@@ -18,6 +19,7 @@ const App = () => {
           <Route exact path="/update/:_id" component={UpdateAppointemnt} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/calendar" component={Calendar} />
+          <Route exact path="/search" component={Search} />
         </Switch>
       </div>
     </div>

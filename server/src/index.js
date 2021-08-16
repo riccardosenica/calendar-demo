@@ -10,8 +10,8 @@ import fs from 'fs';
 import path from 'path';
 import cors from 'cors';
 import jwt from 'jsonwebtoken';
+const { APP_SECRET } = require('../utils');
 
-const APP_SECRET = 'GraphQL-is-aw3some';
 const moduleURL = new URL(import.meta.url);
 const __dirname = path.dirname(moduleURL.pathname);
 const app = express();
@@ -76,7 +76,7 @@ const server = new ApolloServer({
         req && req.headers.authorization
           ? getUserId(req)
           : null
-    }
+    };
   },
   // subscriptions: {
   //   onConnect: (connectionParams) => {

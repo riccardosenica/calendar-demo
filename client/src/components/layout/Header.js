@@ -1,6 +1,6 @@
 import React from 'react';
 // import { useHistory } from 'react-router';
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 // import { AUTH_TOKEN } from '../../constants';
 
 const Header = () => {
@@ -17,6 +17,9 @@ const Header = () => {
             <div className="flex flex-fixed">
                 <Link to="/create" className="ml1 no-underline black">New</Link>
             </div>
+            {/* <div className="flex flex-fixed">
+                <Link to="/search" className="ml1 no-underline black">Search</Link>
+            </div> */}
             {/* <div className="flex flex-fixed">
                 {authToken ? (
                     <div className="ml1 pointer black"

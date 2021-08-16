@@ -1,26 +1,22 @@
-function newLinkSubscribe(parent, args, context, info) {
-  return context.pubsub.asyncIterator("NEW_LINK")
+function newAppointmentSubscribe(parent, args, context) {
+  return context.pubsub.asyncIterator("NEW_APPOINTMENT");
 }
 
 const newAppointment = {
-  subscribe: newLinkSubscribe,
-  resolve: payload => {
-    return payload
-  },
-}
+  subscribe: newAppointmentSubscribe,
+  resolve: payload => payload,
+};
 
-function newFollowSubscribe(parent, args, context, info) {
-  return context.pubsub.asyncIterator("NEW_FOLLOW")
+function newFollowSubscribe(parent, args, context) {
+  return context.pubsub.asyncIterator("NEW_FOLLOW");
 }
 
 const newFollow = {
   subscribe: newFollowSubscribe,
-  resolve: payload => {
-    return payload
-  },
-}
+  resolve: payload => payload,
+};
 
 module.exports = {
   newAppointment,
   newFollow
-}
+};

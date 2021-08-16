@@ -7,9 +7,7 @@ type Query {
     orderBy: AppointmentOrderByInput
   ): Feed!
   allAppointments: [Appointment]
-  oneAppointment(
-    _id: ID!
-  ): Appointment
+  oneAppointment(_id: ID!): Appointment
   allUsers: [User]
   users: [User!]!
 }
@@ -30,7 +28,7 @@ type Mutation {
     deleted: Boolean
   ): Appointment!
   updateAppointment(
-    _id: ID!, 
+    _id: ID!
     title: String!
     description: String
     type: String!
@@ -38,21 +36,10 @@ type Mutation {
     end: DateTime!
     deleted: Boolean
   ): Appointment
-  deleteAppointment(
-    _id: ID!
-  ) : Appointment
-  signup(
-    email: String!
-    password: String!
-    username: String!
-  ): AuthPayload
-  login(
-    email: String!, 
-    password: String!
-    ): AuthPayload
-  follow(
-    appointmentId: ID!
-    ): Follow
+  deleteAppointment(_id: ID!): Appointment
+  signup(email: String!, password: String!, username: String!): AuthPayload
+  login(email: String!, password: String!): AuthPayload
+  follow(appointmentId: ID!): Follow
 }
 
 type Subscription {
@@ -66,13 +53,13 @@ type User {
   username: String!
   email: String!
   password: String!
-  # appointments: [Appointment!]!
+  appointments: [Appointment!]!
 }
-input UserInput{
+input UserInput {
   username: String!
   email: String!
   password: String!
-  # appointments: [Appointment!]!
+  appointments: [Appointment!]!
 }
 type AuthPayload {
   token: String
@@ -88,9 +75,8 @@ type Appointment {
   start: DateTime!
   end: DateTime!
   deleted: Boolean
-  createdBy: User
+  user: User
   # follows: [Follow!]!
-  # createdAt: DateTime!
 }
 input AppointmentInput {
   title: String!
@@ -99,11 +85,10 @@ input AppointmentInput {
   start: DateTime!
   end: DateTime!
   deleted: Boolean
- }
+}
 input AppointmentOrderByInput {
   title: Sort
   desc: Sort
-  # createdAt: Sort
 }
 
 # Follow schemas

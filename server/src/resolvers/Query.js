@@ -1,4 +1,4 @@
-async function feed(parent, args, context, info) {
+async function feed(parent, args, context) {
 
   const where = args.filter
     ? {

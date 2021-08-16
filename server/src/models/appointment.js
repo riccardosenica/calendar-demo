@@ -24,6 +24,11 @@ const AppointmentSchema = new Schema({
     deleted: {
         type: Boolean,
         required: false
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user",
+        required: false
     }
 });
 export default mongoose.model('appointment', AppointmentSchema);
