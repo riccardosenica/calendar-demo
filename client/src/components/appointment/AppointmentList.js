@@ -16,7 +16,7 @@ export const APPOINTMENTS_QUERY = gql`
 
 const AppointmentList = () => {
 
-  const { data, loading } = useQuery(APPOINTMENTS_QUERY);
+  const { data } = useQuery(APPOINTMENTS_QUERY);
 
   if (data !== undefined) {
     return (
