@@ -6,7 +6,6 @@ type Query {
     take: Int
     orderBy: AppointmentOrderByInput
   ): Feed!
-  allProducts: [Product]
   allAppointments: [Appointment]
   oneAppointment(
     _id: ID!
@@ -42,16 +41,6 @@ type Mutation {
   deleteAppointment(
     _id: ID!
   ) : Appointment
-  createProduct(
-    input: ProductInput
-  ) : Product
-  updateProduct(
-    _id: ID!, 
-    input: ProductInput
-  ): Product
-  deleteProduct(
-    _id: ID!
-  ) : Product
   signup(
     email: String!
     password: String!
@@ -116,17 +105,6 @@ input AppointmentOrderByInput {
   desc: Sort
   # createdAt: Sort
 }
-
-# Product schemas
-type Product {
-  _id: ID!
-  title: String!
-  qty: Int
-}
-input ProductInput {
-  title: String!
-  qty: Int
- }
 
 # Follow schemas
 type Follow {

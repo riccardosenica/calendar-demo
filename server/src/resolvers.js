@@ -1,5 +1,4 @@
 // import Appointment from '../../client/src/components/Appointment.js';
-import Product from './models/product.js';
 import Appointment from './models/appointment.js';
 import User from './models/user.js'
 // import { createAppointment } from './resolvers/Mutation.js';
@@ -17,9 +16,6 @@ export const resolvers = {
             return await Appointment.findOne({
                 _id: args._id
             });
-        },
-        async allProducts() {
-            return await Product.find();
         },
         async allUsers() {
             return await User.find();
@@ -77,33 +73,7 @@ export const resolvers = {
                 args
             }, args, {
                 new: true
-            })
-        },
-        async deleteAppointment(parent, args, context, info) {
-            return await Appointment.findOneAndUpdate({ _id: args._id }, { deleted: true })
-            // return await Appointment.deleteOne({ _id: args._id });
-        },
-        async createProduct(root, {
-            input
-        }) {
-            return await Product.create(input);
-        },
-        async updateProduct(root, {
-            _id,
-            input
-        }) {
-            return await Product.findOneAndUpdate({
-                _id
-            }, input, {
-                new: true
-            })
-        },
-        async deleteProduct(root, {
-            _id
-        }) {
-            return await Product.findOneAndRemove({
-                _id
             });
-        },
+        }
     }
 };

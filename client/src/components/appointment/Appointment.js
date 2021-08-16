@@ -21,15 +21,16 @@ const Appointment = (props) => {
         onCompleted: () => history.push('/')
     })
 
-    const updateAppointment = () => {
-        let path = `/update/${appointment._id}`;
-        history.push(path);
-    }
+    // const updateAppointment = () => {
+    //     let path = `/update/${appointment._id}`;
+    //     history.push(path);
+    // }
 
     return (
         <div>
             <div>
-                <b>{appointment.title}</b> starts at {appointment.start}, ends at {appointment.end}. It is described as "{appointment.description}"<button onClick={deleteAppointment}>DELETE</button><button onClick={updateAppointment}>EDIT</button>
+                <b>{appointment.title}</b> starts at {appointment.start}, ends at {appointment.end}. It is described as "{appointment.description}"<button onClick={deleteAppointment}>DELETE</button>
+                {/* <button onClick={updateAppointment}>EDIT</button> */}
             </div>
         </div>
     );
