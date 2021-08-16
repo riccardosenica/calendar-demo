@@ -9,11 +9,15 @@ import './utils/db.js';
 import fs from 'fs';
 import path from 'path';
 import cors from 'cors';
-// import getUserId from './utils';
-
-
 import jwt from 'jsonwebtoken';
+
 const APP_SECRET = 'GraphQL-is-aw3some';
+const moduleURL = new URL(import.meta.url);
+const __dirname = path.dirname(moduleURL.pathname);
+const app = express();
+const pubsub = new PubSub();
+
+dotenv.config();
 
 function getTokenPayload(token) {
   return jwt.verify(token, APP_SECRET);
@@ -38,19 +42,10 @@ function getUserId(req, authToken) {
   throw new Error('Not authenticated');
 }
 
-
-
-const moduleURL = new URL(import.meta.url);
-const __dirname = path.dirname(moduleURL.pathname);
-const app = express();
-const pubsub = new PubSub();
-
-dotenv.config();
-
 app.use(cors());
 
-app.use('/djhb58fytkh476dk45yh49', graphqlHTTP({
-  schema: schema,
+app.use('/graphql', graphqlHTTP({
+  schema,
   validationRules: [depthLimit(3)],
   graphiql: true
 }));
@@ -121,8 +116,7 @@ server.applyMiddleware({
 });
 
 app.listen({ port: process.env.PORT }, () => {
-  console.log(`🚀 Server listening on port ${process.env.PORT}`);
-  console.log(`😷 Health checks available at ${process.env.HEALTH_ENDPOINT}`);
+  console.log(`Server listening on port ${process.env.PORT}`);
 });
 
 
