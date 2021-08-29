@@ -1,6 +1,7 @@
 import Appointment from './models/appointment.js';
 import User from './models/user.js';
 import jwt from 'jsonwebtoken';
+import { createAppointment } from './resolvers/Mutation';
 
 export const resolvers = {
     Query: {
@@ -30,11 +31,7 @@ export const resolvers = {
             };
         },
 
-        async login(parent, args, context) {
-            console.log(context);
-            const { userId } = context;
-            console.log(userId);
-
+        async login(parent, args) {
             const user = await User.findOne({
                 email: args.email
             });
@@ -55,15 +52,9 @@ export const resolvers = {
         },
 
         async createAppointment(parent, args, context) {
-            console.log(context);
-            const { userId } = context;
-            console.log("userID", userId);
-            args.deleted = false;
-            args.createdBy = userId;
-            return await Appointment.create(args);
+            return await createAppointment(parent, args, context);
         },
         async updateAppointment(parent, args) {
-            console.log(args);
             return await Appointment.findOneAndUpdate({
                 args
             }, args, {

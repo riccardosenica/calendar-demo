@@ -59,7 +59,7 @@ input UserInput {
   username: String!
   email: String!
   password: String!
-  appointments: [Appointment!]!
+  appointments: [AppointmentInput!]!
 }
 type AuthPayload {
   token: String
@@ -75,7 +75,7 @@ type Appointment {
   start: DateTime!
   end: DateTime!
   deleted: Boolean
-  user: User
+  createdBy: User
   # follows: [Follow!]!
 }
 input AppointmentInput {

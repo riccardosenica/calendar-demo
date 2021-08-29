@@ -10,7 +10,6 @@ import fs from 'fs';
 import path from 'path';
 import cors from 'cors';
 import jwt from 'jsonwebtoken';
-const { APP_SECRET } = require('../utils');
 
 const moduleURL = new URL(import.meta.url);
 const __dirname = path.dirname(moduleURL.pathname);
@@ -20,7 +19,7 @@ const pubsub = new PubSub();
 dotenv.config();
 
 function getTokenPayload(token) {
-  return jwt.verify(token, APP_SECRET);
+  return jwt.verify(token, process.env.APP_SECRET);
 }
 
 function getUserId(req, authToken) {
@@ -58,17 +57,7 @@ const server = new ApolloServer({
   // schema,
   cors: true,
   playground: process.env.NODE_ENV === 'development' ? true : false,
-  context: ({ req }) => {
-    //     if (!db) {
-    //       try {
-    //         if (!dbClient.isConnected()) await dbClient.connect()
-    //         mongo = dbClient.db('Calendar') // database name
-    //         console.log(db);
-    //       } catch (e) {
-    //         console.log('--->error while connecting with graphql context (db)', e)
-    //       }
-
-    return {
+  context: ({ req }) => ({
       ...req,
       mongoose,
       pubsub,
@@ -76,25 +65,24 @@ const server = new ApolloServer({
         req && req.headers.authorization
           ? getUserId(req)
           : null
-    };
+    }),
+  subscriptions: {
+    onConnect: (connectionParams) => {
+      if (connectionParams.authToken) {
+        return {
+          mongoose,
+          userId: getUserId(
+            null,
+            connectionParams.authToken
+          )
+        };
+      } else {
+        return {
+          mongoose
+        };
+      }
+    }
   },
-  // subscriptions: {
-  //   onConnect: (connectionParams) => {
-  //     if (connectionParams.authToken) {
-  //       return {
-  //         mongoose,
-  //         userId: getUserId(
-  //           null,
-  //           connectionParams.authToken
-  //         )
-  //       };
-  //     } else {
-  //       return {
-  //         mongoose
-  //       };
-  //     }
-  //   }
-  // },
   introspection: true,
   tracing: true,
   path: '/',
@@ -118,36 +106,3 @@ server.applyMiddleware({
 app.listen({ port: process.env.PORT }, () => {
   console.log(`Server listening on port ${process.env.PORT}`);
 });
-
-
-// const { graphqlHTTP } = require('express-graphql');
-// const mongoose = require("mongoose");
-// const graphqlSchema = require("./graphql/schema/schema")
-// const appointmentResolvers = require("./graphql/resolvers/appointment")
-// const userResolvers = require("./graphql/resolvers/user")
-
-// var MongoClient = require('mongodb', { useUnifiedTopology: true }).MongoClient;
-// // import { MongoClient } from 'mongodb'
-// const Query = require('./resolvers/Query');
-// const Mutation = require('./resolvers/Mutation');
-// const Subscription = require('./resolvers/Subscription');
-// const User = require('./resolvers/User');
-// const Appointment = require('./resolvers/Appointment');
-// const Follow = require('./resolvers/Follow');
-// const fs = require('fs');
-// const path = require('path');
-// const { getUserId } = require('./utils');
-
-// const graphqlResolvers = {
-//   appointmentResolvers,
-//   userResolvers
-// };
-
-// // const resolvers = {
-// //   Query,
-// //   Mutation,
-// //   Subscription,
-// //   User,
-// //   Appointment,
-// //   Follow
-// // };

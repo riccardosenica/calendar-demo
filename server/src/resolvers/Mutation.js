@@ -1,19 +1,16 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { APP_SECRET } = require('../utils');
+import dotenv from 'dotenv';
+import appointment from '../models/appointment';
 
-function createAppointment(parent, args, context) {
+dotenv.config();
+
+async function createAppointment(parent, args, context) {
   const { userId } = context;
-
-  const newAppointment = context.mongo.appointment.create({
-    data: {
-      title: args.title,
-      description: args.description,
-      createdBy: { connect: { id: userId } }
-    }
-  });
-
-  return newAppointment;
+  args.deleted = false;
+  args.createdBy = userId;
+  console.log(parent, args, context);
+  return await appointment.create(args);
 }
 
 async function signup(parent, args, context) {
@@ -22,7 +19,7 @@ async function signup(parent, args, context) {
     data: { ...args, password }
   });
 
-  const token = jwt.sign({ userId: user.id }, APP_SECRET);
+  const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
 
   return {
     token,
@@ -46,7 +43,7 @@ async function login(parent, args, context) {
     throw new Error('Invalid password');
   }
 
-  const token = jwt.sign({ userId: user.id }, APP_SECRET);
+  const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
 
   return {
     token,

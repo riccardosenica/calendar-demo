@@ -21,10 +21,10 @@ const Appointment = (props) => {
         onCompleted: () => history.push('/')
     })
 
-    const updateAppointment = () => {
-        let path = `/update/${appointment._id}`;
-        history.push(path);
-    }
+    // const updateAppointment = () => {
+    //     let path = `/update/${appointment._id}`;
+    //     history.push(path);
+    // }
 
     return (
         <div>

@@ -43,34 +43,34 @@ const CreateAppointment = () => {
             start: formState.start,
             end: formState.end
         },
-        // update: (cache, { data: { createAppointment } }) => {
-        //     const take = APPOINTMENTS_PER_PAGE;
-        //     const skip = 0;
-        //     const orderBy = { createdAt: 'desc' };
+        update: (cache, { data: { createAppointment } }) => {
+            const take = APPOINTMENTS_PER_PAGE;
+            const skip = 0;
+            const orderBy = { createdAt: 'desc' };
 
-        //     const data = cache.readQuery({
-        //         query: APPOINTMENTS_QUERY,
-        //         variables: {
-        //             take,
-        //             skip,
-        //             orderBy
-        //         }
-        //     });
+            const data = cache.readQuery({
+                query: APPOINTMENTS_QUERY,
+                variables: {
+                    take,
+                    skip,
+                    orderBy
+                }
+            });
 
-        //     cache.writeQuery({
-        //         query: APPOINTMENTS_QUERY,
-        //         data: {
-        //             allAppointments: {
-        //                 appointments: [createAppointment, ...data.allAppointments]
-        //             }
-        //         },
-        //         variables: {
-        //             take,
-        //             skip,
-        //             orderBy
-        //         }
-        //     });
-        // },
+            cache.writeQuery({
+                query: APPOINTMENTS_QUERY,
+                data: {
+                    allAppointments: {
+                        appointments: [createAppointment, ...data.allAppointments]
+                    }
+                },
+                variables: {
+                    take,
+                    skip,
+                    orderBy
+                }
+            });
+        },
         onCompleted: () => history.push('/')
     });
 
