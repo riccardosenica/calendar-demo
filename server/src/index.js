@@ -9,34 +9,6 @@ import './utils/db.js';
 import fs from 'fs';
 import path from 'path';
 import cors from 'cors';
-import jwt from 'jsonwebtoken';
-
-const APP_SECRET = 'GraphQL-is-aw3some';
-
-function getTokenPayload(token) {
-  return jwt.verify(token, APP_SECRET);
-}
-
-function getUserId(req, authToken) {
-  if (req) {
-    const authHeader = req.headers.authorization;
-    if (authHeader) {
-      const token = authHeader.replace('Bearer ', '');
-      if (!token) {
-        throw new Error('No token found');
-      }
-      const { userId } = getTokenPayload(token);
-      return userId;
-    }
-  } else if (authToken) {
-    const { userId } = getTokenPayload(authToken);
-    return userId;
-  }
-
-  throw new Error('Not authenticated');
-}
-
-
 
 const moduleURL = new URL(import.meta.url);
 const __dirname = path.dirname(moduleURL.pathname);
@@ -64,11 +36,7 @@ const server = new ApolloServer({
     return {
       ...req,
       mongoose,
-      pubsub,
-      userId:
-        req && req.headers.authorization
-          ? getUserId(req)
-          : null
+      pubsub
     }
   },
   introspection: true,

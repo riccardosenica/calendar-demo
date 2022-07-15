@@ -11,10 +11,6 @@ const FEED_SEARCH_QUERY = gql`
         title
         description
         type
-        createdBy {
-          id
-          username
-        }
       }
     }
   }

@@ -6,13 +6,8 @@ type Query {
     take: Int
     orderBy: AppointmentOrderByInput
   ): Feed!
-  allProducts: [Product]
   allAppointments: [Appointment]
-  oneAppointment(
-    _id: ID!
-  ): Appointment
-  allUsers: [User]
-  users: [User!]!
+  oneAppointment(_id: ID!): Appointment
 }
 
 type Feed {
@@ -31,7 +26,7 @@ type Mutation {
     deleted: Boolean
   ): Appointment!
   updateAppointment(
-    _id: ID!, 
+    _id: ID!
     title: String!
     description: String
     type: String!
@@ -39,55 +34,11 @@ type Mutation {
     end: DateTime!
     deleted: Boolean
   ): Appointment
-  deleteAppointment(
-    _id: ID!
-  ) : Appointment
-  createProduct(
-    input: ProductInput
-  ) : Product
-  updateProduct(
-    _id: ID!, 
-    input: ProductInput
-  ): Product
-  deleteProduct(
-    _id: ID!
-  ) : Product
-  signup(
-    email: String!
-    password: String!
-    username: String!
-  ): AuthPayload
-  login(
-    email: String!, 
-    password: String!
-    ): AuthPayload
-  follow(
-    appointmentId: ID!
-    ): Follow
+  deleteAppointment(_id: ID!): Appointment
 }
 
 type Subscription {
   newAppointment: Appointment
-  newFollow: Follow
-}
-
-#User Schemas
-type User {
-  _id: ID!
-  username: String!
-  email: String!
-  password: String!
-  # appointments: [Appointment!]!
-}
-input UserInput{
-  username: String!
-  email: String!
-  password: String!
-  # appointments: [Appointment!]!
-}
-type AuthPayload {
-  token: String
-  user: User
 }
 
 # Appointment schemas
@@ -99,9 +50,6 @@ type Appointment {
   start: DateTime!
   end: DateTime!
   deleted: Boolean
-  createdBy: User
-  # follows: [Follow!]!
-  # createdAt: DateTime!
 }
 input AppointmentInput {
   title: String!
@@ -110,29 +58,10 @@ input AppointmentInput {
   start: DateTime!
   end: DateTime!
   deleted: Boolean
- }
+}
 input AppointmentOrderByInput {
   title: Sort
   desc: Sort
-  # createdAt: Sort
-}
-
-# Product schemas
-type Product {
-  _id: ID!
-  title: String!
-  qty: Int
-}
-input ProductInput {
-  title: String!
-  qty: Int
- }
-
-# Follow schemas
-type Follow {
-  _id: ID!
-  appointment: Appointment!
-  user: User!
 }
 
 # General-purpose schemas

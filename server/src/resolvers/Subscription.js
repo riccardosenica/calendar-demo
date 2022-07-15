@@ -9,18 +9,6 @@ const newAppointment = {
   },
 }
 
-function newFollowSubscribe(parent, args, context, info) {
-  return context.pubsub.asyncIterator("NEW_FOLLOW")
-}
-
-const newFollow = {
-  subscribe: newFollowSubscribe,
-  resolve: payload => {
-    return payload
-  },
-}
-
 module.exports = {
   newAppointment,
-  newFollow
 }
