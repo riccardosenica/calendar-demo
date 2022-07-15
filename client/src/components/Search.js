@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
-import { useMutation } from '@apollo/client';
 import { useLazyQuery } from '@apollo/client';
 import gql from 'graphql-tag';
-import Appointment from './Appointment';
-import { Link } from 'react-router-dom';
 
 const FEED_SEARCH_QUERY = gql`
   query FeedSearchQuery($filter: String!) {
@@ -18,12 +15,6 @@ const FEED_SEARCH_QUERY = gql`
           id
           username
         }
-        # follows {
-        #   id
-        #   user {
-        #     id
-        #   }
-        # }
       }
     }
   }
@@ -52,10 +43,6 @@ const Search = () => {
           OK
         </button>
       </div>
-      {/* {data &&
-        data.feed.appointments.map((appointment, index) => (
-          <Link key={appointment.id} link={appointment} index={index} />
-        ))} */}
     </>
   );
 };

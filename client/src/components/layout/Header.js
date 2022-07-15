@@ -17,18 +17,6 @@ const Header = () => {
             <div className="flex flex-fixed">
                 <Link to="/create" className="ml1 no-underline black">New</Link>
             </div>
-            <div className="flex flex-fixed">
-                {authToken ? (
-                    <div className="ml1 pointer black"
-                        onClick={() => {
-                            localStorage.removeItem(AUTH_TOKEN);
-                            history.push(`/`);
-                        }}
-                    >Logout</div>
-                ) : (
-                        <Link to="/login" className="ml1 no-underline black">Login</Link>
-                    )}
-            </div>
         </div>
     );
 };

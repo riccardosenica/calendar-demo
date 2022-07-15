@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import { useMutation, gql, useQuery } from '@apollo/client';
-import { APPOINTMENTS_PER_PAGE } from '../../constants';
-import { APPOINTMENTS_QUERY } from './AppointmentList';
 import Datetime from 'react-datetime';
 import "react-datetime/css/react-datetime.css";
 
@@ -74,10 +72,6 @@ const UpdateAppointment = ({ match: { params: { _id } } }) => {
     if (data === undefined) {
         return <div>Loading...</div>
     } else {
-        // setFormState({
-        //     formState.title= data.oneAppointment.title
-        // })
-
         return (
             <div>
                 <form
@@ -95,16 +89,10 @@ const UpdateAppointment = ({ match: { params: { _id } } }) => {
                             type="text"
                         />
                         <input
+                            readOnly
                             className="mb2"
-                            value={formState.title}
-                            onChange={(e) =>
-                                setFormState({
-                                    ...formState,
-                                    title: e.target.value
-                                })
-                            }
+                            value={data.oneAppointment.title}
                             type="text"
-                            placeholder="Input title"
                         />
                         <input
                             className="mb2"

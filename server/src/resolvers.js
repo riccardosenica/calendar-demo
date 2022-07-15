@@ -1,17 +1,12 @@
-// import Appointment from '../../client/src/components/Appointment.js';
 import Product from './models/product.js';
 import Appointment from './models/appointment.js';
 import User from './models/user.js'
-// import { createAppointment } from './resolvers/Mutation.js';
-import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
 
 export const resolvers = {
     Query: {
         async allAppointments() {
             return await Appointment.find({ deleted: false })
-            // return await Appointment.find();
         },
         async oneAppointment(root, args, context, info) {
             return await Appointment.findOne({
@@ -81,7 +76,6 @@ export const resolvers = {
         },
         async deleteAppointment(parent, args, context, info) {
             return await Appointment.findOneAndUpdate({ _id: args._id }, { deleted: true })
-            // return await Appointment.deleteOne({ _id: args._id });
         },
         async createProduct(root, {
             input
